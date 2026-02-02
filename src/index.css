@@ -1,0 +1,425 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  @apply min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-sans antialiased;
+}
+
+.light body {
+  @apply bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 text-slate-900;
+}
+
+.container-wide {
+  @apply max-w-6xl mx-auto px-4 sm:px-6 md:px-8;
+}
+
+a {
+  @apply underline decoration-dashed decoration-brand-blue/60 hover:decoration-brand-purple;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold transition-transform duration-150 shadow-lg;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-brand-blue to-brand-purple text-white hover:scale-[1.02];
+}
+
+.card-surface {
+  @apply bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl;
+}
+
+.light .card-surface {
+  @apply bg-white border-slate-200;
+}
+
+.glass {
+  @apply bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl rounded-3xl;
+}
+
+.pill {
+  @apply px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase;
+}
+
+.grid-auto {
+  @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.section-title {
+  @apply text-3xl sm:text-4xl font-extrabold text-center bg-gradient-to-r from-brand-blue via-brand-purple to-brand-teal bg-clip-text text-transparent mb-8;
+}
+
+.text-muted {
+  @apply text-slate-300;
+}
+
+.light .text-muted {
+  @apply text-slate-600;
+}
+
+.headline {
+  @apply text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight;
+}
+
+.subhead {
+  @apply text-lg text-muted leading-relaxed;
+}
+
+.stat-bar {
+  @apply h-2 rounded-full bg-slate-700 overflow-hidden;
+}
+
+.light .stat-bar {
+  @apply bg-slate-200;
+}
+
+.stat-fill {
+  @apply h-full bg-gradient-to-r from-brand-teal to-brand-blue;
+}
+
+.badge-tile {
+  @apply inline-flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold bg-white/10 border border-white/10;
+}
+
+.light .badge-tile {
+  @apply bg-slate-100 border-slate-200;
+}
+
+.section-shell {
+  @apply relative overflow-hidden rounded-3xl p-8 sm:p-10;
+}
+
+.section-bg {
+  @apply absolute inset-0 -z-10 opacity-70;
+}
+
+.parallax-dots {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+.tilt-card {
+  @apply transition-transform duration-200 hover:-translate-y-1 hover:rotate-1;
+}
+
+.shadow-glow {
+  box-shadow: 0 10px 40px rgba(52, 152, 219, 0.35);
+}
+
+.light .shadow-glow {
+  box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15);
+}
+
+/* Advanced animations for landing page */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -50px) scale(1.1);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(50px, 50px) scale(1.05);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes bounce-smooth {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-800 {
+  animation-delay: 0.8s;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+.animate-bounce {
+  animation: bounce-smooth 2s infinite;
+}
+
+/* Data Storytelling Animations */
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes number-counter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes data-flow {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes float-up {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+.animate-slide-left {
+  animation: slide-in-left 0.6s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slide-in-right 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-float {
+  animation: float-up 3s ease-in-out infinite;
+}
+
+.animate-data-flow {
+  animation: data-flow 1.5s ease-in-out infinite;
+}
+
+/* Interactive chart animations */
+.chart-bar {
+  @apply transition-all duration-700 ease-out;
+}
+
+.chart-bar.animate {
+  animation: slide-in-left 0.8s ease-out forwards;
+}
+
+.metric-value {
+  @apply transition-all duration-500 ease-out;
+}
+
+.metric-value.visible {
+  @apply opacity-100;
+}
+
+/* Smooth transitions for data updates */
+.data-transition {
+  @apply transition-all duration-500 ease-out;
+}
+
+/* Card hover effects for data visualization */
+.data-card {
+  @apply relative overflow-hidden transition-all duration-300 hover:shadow-2xl;
+}
+
+.data-card::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity duration-300;
+  pointer-events: none;
+}
+
+.data-card:hover::before {
+  @apply opacity-100;
+}
+
+/* Before/After comparison animation */
+.comparison-slider {
+  @apply transition-all duration-300 ease-out;
+}
+
+.comparison-slider:hover {
+  @apply shadow-2xl;
+}
+
+/* Timeline animations */
+.timeline-step {
+  @apply transition-all duration-500 ease-out;
+}
+
+.timeline-step.active {
+  @apply opacity-100 translate-y-0;
+}
+
+.timeline-step.inactive {
+  @apply opacity-50 translate-y-2;
+}
+
+/* Staggered animations for lists */
+.stagger-item {
+  @apply transition-all duration-500 ease-out;
+}
+
+.stagger-container > .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+.stagger-container > .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+.stagger-container > .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+.stagger-container > .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+.stagger-container > .stagger-item:nth-child(5) { animation-delay: 0.5s; }
+.stagger-container > .stagger-item:nth-child(6) { animation-delay: 0.6s; }
+
+/* Progress animations */
+.progress-fill {
+  @apply transition-all duration-1000 ease-out;
+}
+
+.progress-fill.complete {
+  @apply w-full;
+}
+
+/* Entrance animations */
+.fade-in {
+  @apply animate-fade-in-up animation-delay-200;
+}
+
+.fade-in-delayed {
+  @apply animate-fade-in-up animation-delay-400;
+}
+
+.fade-in-slower {
+  @apply animate-fade-in-up animation-delay-600;
+}
+
+/* Responsive animations for mobile */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
