@@ -1,4 +1,29 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
+
+function useTheme() {
+  const prefersDark = useMemo(
+    () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
+    []
+  );
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light'));
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.remove('light', 'dark');
+    html.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const listener = (e) => setTheme(e.matches ? 'dark' : 'light');
+    mq.addEventListener('change', listener);
+    return () => mq.removeEventListener('change', listener);
+  }, []);
+
+  const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  return { theme, toggle };
+}
 
 /**
  * BarChart Component - Animated bar visualization for data comparison
@@ -7,6 +32,7 @@ import React, { useRef, useEffect, useState } from 'react';
  * @param {boolean} animated - Whether to animate on mount/scroll
  */
 export function BarChart({ data, title, animated = true }) {
+  const { theme } = useTheme();
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(!animated);
 
@@ -32,7 +58,7 @@ export function BarChart({ data, title, animated = true }) {
         {data.map((item, idx) => (
           <div key={item.label} className="space-y-1">
             <div className="flex items-center justify-between text-sm">
-              <span className="font-medium text-muted">{item.label}</span>
+              <span className="font-medium" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{item.label}</span>
               <span className="font-bold text-white light:text-slate-900">
                 {item.value}
                 {item.unit && item.unit}
@@ -215,7 +241,7 @@ export function ComparisonSlider({ before, after, label, animated = true }) {
       <div className="relative h-32 glass rounded-lg overflow-hidden cursor-col-resize">
         <div className="absolute inset-0 flex">
           <div className="flex-1 p-4 bg-slate-600/20 flex flex-col justify-center">
-            <p className="text-xs text-slate-400 font-semibold uppercase">Before</p>
+            <p className="text-xs font-semibold uppercase" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Before</p>
             <p className="text-2xl font-bold text-white mt-2">{before}</p>
           </div>
           <div

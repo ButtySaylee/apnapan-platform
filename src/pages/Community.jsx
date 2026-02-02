@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation, RotateAnimation } from '../components/ScrollAnimations';
 
 const stories = [
   {
@@ -97,11 +98,11 @@ export default function Community() {
               <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-12 w-12 rounded-full shadow-glow" loading="lazy" />
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-slate-900">Project Apnapan</h1>
-                <p className="text-xs text-slate-300 light:text-slate-600">Community Hub</p>
+                <p className="text-xs" style={{ color: theme === 'dark' ? '#cbd5e1' : '#64748b' }}>Community Hub</p>
               </div>
             </Link>
             <div className="flex-1" />
-            <Link to="/schools" className="text-sm font-semibold text-muted hover:text-white light:hover:text-slate-900 transition-colors mr-4">
+            <Link to="/schools" className="text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }} onMouseEnter={(e) => e.target.style.color = theme === 'dark' ? '#ffffff' : '#0f172a'} onMouseLeave={(e) => e.target.style.color = theme === 'dark' ? '#cbd5e1' : '#475569'}>
               School Partnership
             </Link>
             <button
@@ -118,191 +119,247 @@ export default function Community() {
 
         <main className="container-wide space-y-16 py-10">
           {/* Community Hero */}
-          <section className="section-shell card-surface overflow-hidden">
-            <div className="section-bg parallax-dots" aria-hidden />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/20 via-brand-purple/15 to-brand-teal/20 blur-3xl -z-10" aria-hidden />
-            <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-center">
-              <div className="space-y-5">
-                <div className="pill bg-white/10 light:bg-slate-200 text-white light:text-slate-800">Community · Stories · Impact</div>
-                <h2 className="headline">Voices and stories from educators and students transforming schools.</h2>
-                <p className="subhead">Explore the community hub: share your story, learn from others, and co-create belonging-centered solutions.</p>
-                <div className="flex flex-wrap gap-3">
-                  <button className="btn btn-primary">Share Your Story</button>
-                  <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Browse Resources</button>
-                </div>
-              </div>
-              <div className="glass relative p-6">
-                <p className="text-sm text-muted">Community Stats</p>
-                <div className="mt-4 space-y-3">
-                  {insights.map((item) => (
-                    <div key={item.label} className="space-y-2">
-                      <div className="flex items-center justify-between text-sm font-semibold">
-                        <span>{item.label}</span>
-                        <span className="text-brand-teal">{item.delta}</span>
-                      </div>
-                      <div className="stat-bar">
-                        <div className={`stat-fill bg-gradient-to-r ${item.color}`} style={{ width: `${item.value}%` }} />
-                      </div>
+          <BlurAnimation delay={0} duration={0.8}>
+            <section className="section-shell card-surface overflow-hidden">
+              <div className="section-bg parallax-dots" aria-hidden />
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/20 via-brand-purple/15 to-brand-teal/20 blur-3xl -z-10" aria-hidden />
+              <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-center">
+                <SlideAnimation direction="left" delay={0.1}>
+                  <div className="space-y-5">
+                    <div className="pill bg-white/10 light:bg-slate-200 text-white light:text-slate-800">Community · Stories · Impact</div>
+                    <h2 className="headline">Voices and stories from educators and students transforming schools.</h2>
+                    <p className="subhead">Explore the community hub: share your story, learn from others, and co-create belonging-centered solutions.</p>
+                    <div className="flex flex-wrap gap-3">
+                      <button className="btn btn-primary">Share Your Story</button>
+                      <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Browse Resources</button>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                </SlideAnimation>
+                <SlideAnimation direction="right" delay={0.2}>
+                  <div className="glass relative p-6">
+                    <p className="text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Community Stats</p>
+                    <StaggerAnimation delay={0.3} staggerDelay={0.1}>
+                      <div className="mt-4 space-y-3">
+                        {insights.map((item) => (
+                          <div key={item.label} className="space-y-2">
+                            <div className="flex items-center justify-between text-sm font-semibold">
+                              <span>{item.label}</span>
+                              <span className="text-brand-teal">{item.delta}</span>
+                            </div>
+                            <div className="stat-bar">
+                              <div className={`stat-fill bg-gradient-to-r ${item.color}`} style={{ width: `${item.value}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </StaggerAnimation>
+                  </div>
+                </SlideAnimation>
               </div>
-            </div>
-          </section>
+            </section>
+          </BlurAnimation>
 
           {/* Schools Partnership Teaser */}
-          <section className="card-surface p-8 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/10 via-brand-teal/5 to-transparent -z-10" aria-hidden />
-            <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] items-center">
-              <div className="space-y-4">
-                <div className="pill bg-white/10 light:bg-slate-200 text-white light:text-slate-800 w-fit">For School Leaders</div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold leading-tight">Transform How Your School Measures Success</h3>
-                <p className="text-muted leading-relaxed">
-                  Two schools, same test scores. One measures belonging, voice, and authenticity. Discover what happens when you measure what actually matters.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <Link to="/schools" className="btn btn-primary">Explore School Partnership</Link>
-                  <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">See the Data</button>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                  <p className="text-3xl font-bold text-brand-teal">+47%</p>
-                  <p className="text-sm text-muted">Belonging increase</p>
-                </div>
-                <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                  <p className="text-3xl font-bold text-brand-purple">12+</p>
-                  <p className="text-sm text-muted">Schools transformed</p>
-                </div>
-                <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                  <p className="text-3xl font-bold text-brand-blue">89%</p>
-                  <p className="text-sm text-muted">Predictive accuracy</p>
-                </div>
-                <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                  <p className="text-3xl font-bold text-brand-teal">6-18mo</p>
-                  <p className="text-sm text-muted">Implementation timeline</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Narrative Timeline */}
-          <section className="card-surface p-8">
-            <div className="flex items-center justify-between gap-4 flex-wrap">
-              <h2 className="section-title mb-0">Apnapan Journey</h2>
-              <div className="badge-tile">Scroll the milestones →</div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {timeline.map((item, idx) => (
-                <div key={item.year} className="tilt-card card-surface p-6 space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-brand-blue font-semibold">
-                    <span className="pill bg-white/10 light:bg-slate-100 light:text-slate-800">{item.year}</span>
-                    <span>{item.title}</span>
-                  </div>
-                  <p className="text-sm text-muted leading-relaxed">{item.detail}</p>
-                  <div className="h-1 w-full bg-white/10 light:bg-slate-200 rounded-full">
-                    <div className="h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full" style={{ width: `${70 + idx * 8}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Student Stories */}
-          <section className="card-surface p-8">
-            <h2 className="section-title">Voices from the Classroom</h2>
-            <div className="grid-auto">
-              {stories.map((story) => (
-                <div key={story.title} className="tilt-card card-surface p-6 space-y-3 hover:shadow-lg transition-shadow">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{story.media}</span>
-                    <div>
-                      <p className="text-sm text-brand-blue font-semibold">{story.format}</p>
-                      <h3 className="text-lg font-semibold">{story.title}</h3>
-                      <p className="text-xs text-muted">{story.role}</p>
+          <ScaleAnimation delay={0} scale={0.95} duration={0.7}>
+            <section className="card-surface p-8 overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/10 via-brand-teal/5 to-transparent -z-10" aria-hidden />
+              <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] items-center">
+                <SlideAnimation direction="left" delay={0.1}>
+                  <div className="space-y-4">
+                    <div className="pill bg-white/10 light:bg-slate-200 text-white light:text-slate-800 w-fit">For School Leaders</div>
+                    <h3 className="text-2xl sm:text-3xl font-extrabold leading-tight">Transform How Your School Measures Success</h3>
+                    <p className="leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
+                      Two schools, same test scores. One measures belonging, voice, and authenticity. Discover what happens when you measure what actually matters.
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      <Link to="/schools" className="btn btn-primary">Explore School Partnership</Link>
+                      <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">See the Data</button>
                     </div>
                   </div>
-                  <p className="text-sm text-muted leading-relaxed">{story.summary}</p>
-                  <div className="stat-bar">
-                    <div className={`stat-fill bg-gradient-to-r ${story.color}`} style={{ width: '85%' }} />
-                  </div>
+                </SlideAnimation>
+                <SlideAnimation direction="right" delay={0.2}>
+                  <StaggerAnimation delay={0.3} staggerDelay={0.15}>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
+                        <p className="text-3xl font-bold text-brand-teal">+47%</p>
+                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Belonging increase</p>
+                      </div>
+                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
+                        <p className="text-3xl font-bold text-brand-purple">12+</p>
+                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Schools transformed</p>
+                      </div>
+                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
+                        <p className="text-3xl font-bold text-brand-blue">89%</p>
+                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Predictive accuracy</p>
+                      </div>
+                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
+                        <p className="text-3xl font-bold text-brand-teal">6-18mo</p>
+                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Implementation timeline</p>
+                      </div>
+                    </div>
+                  </StaggerAnimation>
+                </SlideAnimation>
+              </div>
+            </section>
+          </ScaleAnimation>
+
+          {/* Narrative Timeline */}
+          <BlurAnimation delay={0} duration={0.8}>
+            <section className="card-surface p-8">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h2 className="section-title mb-0">Apnapan Journey</h2>
+                <div className="badge-tile">Scroll the milestones →</div>
+              </div>
+              <StaggerAnimation delay={0.2} staggerDelay={0.12}>
+                <div className="mt-8 grid gap-6 md:grid-cols-2">
+                  {timeline.map((item, idx) => (
+                    <RotateAnimation key={item.year} delay={idx * 0.1} angle={-3 + idx * 1.5}>
+                      <div className="tilt-card card-surface p-6 space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-brand-blue font-semibold">
+                          <span className="pill bg-white/10 light:bg-slate-100 light:text-slate-800">{item.year}</span>
+                          <span>{item.title}</span>
+                        </div>
+                        <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{item.detail}</p>
+                        <div className="h-1 w-full bg-white/10 light:bg-slate-200 rounded-full">
+                          <div className="h-1 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full" style={{ width: `${70 + idx * 8}%` }} />
+                        </div>
+                      </div>
+                    </RotateAnimation>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
+              </StaggerAnimation>
+            </section>
+          </BlurAnimation>
+
+          {/* Student Stories */}
+          <BlurAnimation delay={0} duration={0.8}>
+            <section className="card-surface p-8">
+              <h2 className="section-title">Voices from the Classroom</h2>
+              <StaggerAnimation delay={0.2} staggerDelay={0.1}>
+                <div className="grid-auto">
+                  {stories.map((story) => (
+                    <DropAnimation key={story.title} distance={40}>
+                      <div className="tilt-card card-surface p-6 space-y-3 hover:shadow-lg transition-shadow">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{story.media}</span>
+                          <div>
+                            <p className="text-sm text-brand-blue font-semibold">{story.format}</p>
+                            <h3 className="text-lg font-semibold">{story.title}</h3>
+                            <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{story.role}</p>
+                          </div>
+                        </div>
+                        <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{story.summary}</p>
+                        <div className="stat-bar">
+                          <div className={`stat-fill bg-gradient-to-r ${story.color}`} style={{ width: '85%' }} />
+                        </div>
+                      </div>
+                    </DropAnimation>
+                  ))}
+                </div>
+              </StaggerAnimation>
+            </section>
+          </BlurAnimation>
 
           {/* Data Pulse & Resources */}
           <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="card-surface p-8 space-y-4">
-              <h2 className="section-title">Data Pulse</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {insights.map((item) => (
-                  <div key={item.label} className="tilt-card card-surface p-4 space-y-2 hover:shadow-lg transition-shadow">
-                    <p className="text-sm text-muted">{item.label}</p>
-                    <p className="text-3xl font-bold">{item.value}%</p>
-                    <span className="badge-tile text-brand-teal">{item.delta}</span>
+            <BlurAnimation delay={0} duration={0.8}>
+              <div className="card-surface p-8 space-y-4">
+                <h2 className="section-title">Data Pulse</h2>
+                <StaggerAnimation delay={0.2} staggerDelay={0.1}>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {insights.map((item) => (
+                      <ScaleAnimation key={item.label} duration={0.6}>
+                        <div className="tilt-card card-surface p-4 space-y-2 hover:shadow-lg transition-shadow">
+                          <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{item.label}</p>
+                          <p className="text-3xl font-bold">{item.value}%</p>
+                          <span className="badge-tile text-brand-teal">{item.delta}</span>
+                        </div>
+                      </ScaleAnimation>
+                    ))}
                   </div>
-                ))}
+                </StaggerAnimation>
               </div>
-            </div>
-            <div className="card-surface p-8 space-y-4">
-              <h2 className="section-title">Resources</h2>
-              <div className="space-y-3">
-                {resources.map((res) => (
-                  <div key={res} className="tilt-card card-surface p-3 text-sm flex items-center gap-3 hover:shadow-lg transition-shadow">
-                    <span className="text-lg">📄</span>
-                    <span className="text-muted">{res}</span>
+            </BlurAnimation>
+            <BlurAnimation delay={0.1} duration={0.8}>
+              <div className="card-surface p-8 space-y-4">
+                <h2 className="section-title">Resources</h2>
+                <StaggerAnimation delay={0.3} staggerDelay={0.1}>
+                  <div className="space-y-3">
+                    {resources.map((res) => (
+                      <DropAnimation key={res} distance={20}>
+                        <div className="tilt-card card-surface p-3 text-sm flex items-center gap-3 hover:shadow-lg transition-shadow">
+                          <span className="text-lg">📄</span>
+                          <span className="" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{res}</span>
+                        </div>
+                      </DropAnimation>
+                    ))}
                   </div>
-                ))}
+                </StaggerAnimation>
               </div>
-            </div>
+            </BlurAnimation>
           </section>
 
           {/* Team */}
-          <section className="card-surface p-8">
-            <h2 className="section-title">Apnapan Team</h2>
-            <div className="grid-auto">
-              {team.map((member) => (
-                <div key={member.name} className="tilt-card card-surface p-6 space-y-3 text-center hover:shadow-lg transition-shadow">
-                  <img src={`/images/${member.img}`} alt={member.name} className="h-20 w-20 rounded-full object-cover border border-white/20 light:border-slate-200 mx-auto" loading="lazy" />
-                  <h3 className="text-lg font-semibold">{member.name}</h3>
-                  <p className="text-sm text-brand-teal font-semibold">{member.role}</p>
-                  <p className="text-sm text-muted leading-relaxed">{member.bio}</p>
+          <BlurAnimation delay={0} duration={0.8}>
+            <section className="card-surface p-8">
+              <h2 className="section-title">Apnapan Team</h2>
+              <StaggerAnimation delay={0.2} staggerDelay={0.15}>
+                <div className="grid-auto">
+                  {team.map((member) => (
+                    <RotateAnimation key={member.name} angle={-8}>
+                      <div className="tilt-card card-surface p-6 space-y-3 text-center hover:shadow-lg transition-shadow">
+                        <img src={`/images/${member.img}`} alt={member.name} className="h-20 w-20 rounded-full object-cover border border-white/20 light:border-slate-200 mx-auto" loading="lazy" />
+                        <h3 className="text-lg font-semibold">{member.name}</h3>
+                        <p className="text-sm text-brand-teal font-semibold">{member.role}</p>
+                        <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{member.bio}</p>
+                      </div>
+                    </RotateAnimation>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
+              </StaggerAnimation>
+            </section>
+          </BlurAnimation>
 
           {/* Partners */}
-          <section className="card-surface p-8">
-            <h2 className="section-title">Partner Organizations</h2>
-            <div className="grid-auto">
-              {partners.map((p) => (
-                <div key={p.name} className="tilt-card card-surface p-6 space-y-3 text-center hover:shadow-lg transition-shadow">
-                  <img src={`/images/${p.img}`} alt={p.name} className="h-20 w-20 rounded-full object-cover border border-white/20 light:border-slate-200 mx-auto" loading="lazy" />
-                  <h3 className="text-lg font-semibold">{p.name}</h3>
-                  <p className="text-sm text-brand-blue font-semibold">{p.role}</p>
-                  <p className="text-sm text-muted leading-relaxed">Impact: {p.impact}</p>
-                  <a href={p.link} className="btn btn-primary" target="_blank" rel="noreferrer">Visit Website</a>
+          <BlurAnimation delay={0} duration={0.8}>
+            <section className="card-surface p-8">
+              <h2 className="section-title">Partner Organizations</h2>
+              <StaggerAnimation delay={0.2} staggerDelay={0.15}>
+                <div className="grid-auto">
+                  {partners.map((p) => (
+                    <SlideAnimation key={p.name} direction="right">
+                      <div className="tilt-card card-surface p-6 space-y-3 text-center hover:shadow-lg transition-shadow">
+                        <img src={`/images/${p.img}`} alt={p.name} className="h-20 w-20 rounded-full object-cover border border-white/20 light:border-slate-200 mx-auto" loading="lazy" />
+                        <h3 className="text-lg font-semibold">{p.name}</h3>
+                        <p className="text-sm text-brand-blue font-semibold">{p.role}</p>
+                        <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Impact: {p.impact}</p>
+                        <a href={p.link} className="btn btn-primary" target="_blank" rel="noreferrer">Visit Website</a>
+                      </div>
+                    </SlideAnimation>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
+              </StaggerAnimation>
+            </section>
+          </BlurAnimation>
 
           {/* Interaction CTA */}
-          <section className="card-surface p-8 text-center space-y-4">
-            <h2 className="section-title">Let's build humane schools together</h2>
-            <p className="subhead">Co-design a storytelling pilot, invite a workshop, or explore our research in your context.</p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <button className="btn btn-primary">Book a walkthrough</button>
-              <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Download pilot kit</button>
-              <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Join educator circle</button>
-            </div>
-          </section>
+          <BlurAnimation delay={0} duration={0.8}>
+            <section className="card-surface p-8 text-center space-y-4">
+              <h2 className="section-title">Let's build humane schools together</h2>
+              <p className="subhead">Co-design a storytelling pilot, invite a workshop, or explore our research in your context.</p>
+              <StaggerAnimation delay={0.3} staggerDelay={0.1} direction="up">
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <button className="btn btn-primary">Book a walkthrough</button>
+                  <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Download pilot kit</button>
+                  <Link to="/calculator" className="btn btn-primary">Calculate Your Transformation</Link>
+                </div>
+              </StaggerAnimation>
+            </section>
+          </BlurAnimation>
         </main>
 
         <footer className="mt-16 py-10 bg-slate-950/70 light:bg-white/80 border-t border-white/10 light:border-slate-200">
-          <div className="container-wide text-center text-sm text-muted">
+          <div className="container-wide text-center text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
             © 2026 Project Apnapan | Designed with empathy and innovation
           </div>
         </footer>
