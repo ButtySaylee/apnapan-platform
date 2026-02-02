@@ -59,7 +59,7 @@ a {
 }
 
 .light .text-muted {
-  @apply text-slate-600;
+  @apply text-slate-900;
 }
 
 .headline {

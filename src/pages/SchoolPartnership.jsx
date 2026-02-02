@@ -178,31 +178,33 @@ function useTheme() {
   return { theme, toggle };
 }
 
-// Data visualization component for comparison
-function MetricComparison() {
-  const [activeMetric, setActiveMetric] = useState(0);
-  const metric = schoolMetrics[activeMetric];
+export default function SchoolPartnership() {
+  const { theme, toggle } = useTheme();
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        {schoolMetrics.map((m, idx) => (
-          <button
-            key={m.metric}
-            onClick={() => setActiveMetric(idx)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-              activeMetric === idx
-                ? 'bg-gradient-to-r from-brand-blue to-brand-purple text-white shadow-lg'
-                : 'bg-white/10 light:bg-slate-200 text-white light:text-slate-900 hover:bg-white/20 light:hover:bg-slate-300'
-            }`}
-          >
-            {m.metric}
-          </button>
-        ))}
-      </div>
+  // Data visualization component for comparison
+  const MetricComparison = () => {
+    const [activeMetric, setActiveMetric] = useState(0);
+    const metric = schoolMetrics[activeMetric];
 
-      <div className="glass p-8 space-y-8">
-        <div>
+    return (
+      <div className="space-y-8">
+        <div className="flex flex-wrap gap-2">
+          {schoolMetrics.map((m, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveMetric(idx)}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                activeMetric === idx
+                  ? 'bg-gradient-to-r from-brand-blue to-brand-purple text-white shadow-lg'
+                  : 'bg-white/10 light:bg-slate-200 text-white light:text-slate-900 hover:bg-white/20 light:hover:bg-slate-300'
+              }`}
+            >
+              {m.metric}
+            </button>
+          ))}
+        </div>
+
+        <div className="glass p-6 rounded-xl space-y-4">
           <p className="text-sm mb-4" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{metric.description}</p>
           <div className="space-y-6">
             <div className="space-y-2">
@@ -230,191 +232,129 @@ function MetricComparison() {
                 />
               </div>
             </div>
-          </div>
 
-          <div className="mt-6 p-4 bg-white/5 light:bg-slate-100 rounded-lg border border-white/10 light:border-slate-200">
-            <p className="text-sm text-white light:text-slate-900">
-              <span className="font-semibold text-brand-teal">+{metric.schoolB - metric.schoolA}%</span> difference.
-              <br />
-              <span className="text-xs mt-2 block" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Same test scores. Different lived experience.</span>
-            </p>
+            <p className="text-xs pt-4 border-t border-white/10 light:border-slate-200" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Same test scores. Different lived experience.</p>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// Scrollable carousel for implementation phases
-function ImplementationTimeline() {
-  const containerRef = useRef(null);
-  const [canScroll, setCanScroll] = useState({ left: false, right: true });
-
-  const scroll = (direction) => {
-    if (containerRef.current) {
-      const amount = 400;
-      containerRef.current.scrollBy({
-        left: direction === 'right' ? amount : -amount,
-        behavior: 'smooth',
-      });
-    }
+    );
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-        setCanScroll({
-          left: scrollLeft > 0,
-          right: scrollLeft < scrollWidth - clientWidth - 10,
-        });
-      }
-    };
-
-    const el = containerRef.current;
-    if (el) {
-      el.addEventListener('scroll', handleScroll);
-      handleScroll();
-    }
-    return () => el?.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="section-title mb-0">Implementation Journey (6-18 months)</h3>
-        <div className="flex gap-2">
-          <button
-            onClick={() => scroll('left')}
-            disabled={!canScroll.left}
-            className="p-2 rounded-lg bg-white/10 light:bg-slate-200 hover:bg-white/20 light:hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            ←
-          </button>
-          <button
-            onClick={() => scroll('right')}
-            disabled={!canScroll.right}
-            className="p-2 rounded-lg bg-white/10 light:bg-slate-200 hover:bg-white/20 light:hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            →
-          </button>
+  // Scrollable carousel for implementation phases
+  const ImplementationTimeline = () => {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <h2 className="section-title">Implementation Timeline</h2>
+          <p className="subhead">12 months from listening to measurable transformation</p>
         </div>
-      </div>
 
-      <div
-        ref={containerRef}
-        className="flex gap-6 overflow-x-auto pb-4 scroll-smooth"
-        style={{ scrollBehavior: 'smooth' }}
-      >
-        {implementationPhases.map((item, idx) => (
-          <div
-            key={item.phase}
-            className="flex-shrink-0 w-80 glass p-6 space-y-4 rounded-xl hover:shadow-xl transition-shadow"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs text-brand-blue font-semibold uppercase tracking-wide">{item.duration}</p>
-                <h4 className="text-xl font-bold mt-1">{item.phase}</h4>
-              </div>
-              <span className="text-3xl">{item.icon}</span>
-            </div>
-
-            <div className="space-y-2">
-              {item.activities.map((activity, i) => (
-                <div key={i} className="flex gap-2 text-sm">
-                  <span className="text-brand-teal mt-0.5">▸</span>
-                  <span className="leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{activity}</span>
+        <div className="grid gap-4 md:grid-cols-2">
+          {implementationPhases.map((item, idx) => (
+            <div key={idx} className="glass p-6 space-y-4 rounded-xl">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-3">
+                  <span className="text-3xl mt-1">{item.icon}</span>
+                  <div>
+                    <h3 className="text-lg font-bold">{item.phase}</h3>
+                    <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{item.duration}</p>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              <div className="space-y-2">
+                {item.activities.map((activity, i) => (
+                  <div key={i} className="flex gap-2 text-sm">
+                    <span className="text-brand-teal mt-0.5">▸</span>
+                    <span className="leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{activity}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-4 border-t border-white/10 light:border-slate-200">
+                <div className={`h-1 rounded-full bg-gradient-to-r ${item.color}`} />
+              </div>
             </div>
-
-            <div className="pt-4 border-t border-white/10 light:border-slate-200">
-              <div className={`h-1 rounded-full bg-gradient-to-r ${item.color}`} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Before/After student voice component
-function StudentVoiceComparison() {
-  const [activeVoice, setActiveVoice] = useState(0);
-  const voice = studentVoices[activeVoice];
-
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        {studentVoices.map((v, idx) => (
-          <button
-            key={idx}
-            onClick={() => setActiveVoice(idx)}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-              activeVoice === idx
-                ? 'bg-gradient-to-r from-brand-blue to-brand-purple text-white shadow-lg'
-                : 'bg-white/10 light:bg-slate-200 text-white light:text-slate-900 hover:bg-white/20 light:hover:bg-slate-300'
-            }`}
-          >
-            {v.grade}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="glass p-6 space-y-3 border border-slate-600/30">
-          <p className="text-xs font-semibold uppercase" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Before Implementation</p>
-          <p className="text-sm italic leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>" {voice.quote}"</p>
-          <div className="flex items-center gap-2 pt-3 border-t border-white/10">
-            <span className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{voice.school}</span>
-          </div>
-        </div>
-
-        <div className="glass p-6 space-y-3 border-l-4 border-brand-teal bg-gradient-to-br from-brand-teal/5 to-brand-blue/5">
-          <p className="text-xs text-brand-teal font-semibold uppercase">After Implementation</p>
-          <p className="text-sm italic leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>" {voice.after}"</p>
-          <div className="flex items-center justify-between pt-3 border-t border-white/10">
-            <span className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{voice.school}</span>
-            <span className="badge-tile bg-brand-teal/20 text-brand-teal">{voice.impact}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Outcomes table with interactive comparison
-function OutcomesComparison() {
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-white/10 light:border-slate-200">
-            <th className="text-left py-3 px-4 text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Metric</th>
-            <th className="text-right py-3 px-4 text-sm font-semibold">Traditional</th>
-            <th className="text-right py-3 px-4 text-sm font-semibold text-brand-teal">Transformed</th>
-            <th className="text-right py-3 px-4 text-sm font-semibold">Change</th>
-          </tr>
-        </thead>
-        <tbody>
-          {outcomeData.map((row, idx) => (
-            <tr key={idx} className="border-b border-white/10 light:border-slate-200 hover:bg-white/5 light:hover:bg-slate-100 transition-colors">
-              <td className="py-3 px-4 text-sm">{row.label}</td>
-              <td className="py-3 px-4 text-right text-sm font-semibold" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{row.traditional}%</td>
-              <td className="py-3 px-4 text-right text-sm font-semibold text-brand-teal">{row.transformed}%</td>
-              <td className="py-3 px-4 text-right">
-                <span className="badge-tile bg-brand-teal/20 text-brand-teal">{row.delta}</span>
-              </td>
-            </tr>
           ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+        </div>
+      </div>
+    );
+  };
 
-export default function SchoolPartnership() {
-  const { theme, toggle } = useTheme();
+  // Before/After student voice component
+  const StudentVoiceComparison = () => {
+    const [activeVoice, setActiveVoice] = useState(0);
+    const voice = studentVoices[activeVoice];
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-wrap gap-2">
+          {studentVoices.map((v, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveVoice(idx)}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                activeVoice === idx
+                  ? 'bg-gradient-to-r from-brand-blue to-brand-purple text-white shadow-lg'
+                  : 'bg-white/10 light:bg-slate-200 text-white light:text-slate-900 hover:bg-white/20 light:hover:bg-slate-300'
+              }`}
+            >
+              {v.grade}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="glass p-6 space-y-3 border border-slate-600/30">
+            <p className="text-xs font-semibold uppercase" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Before Implementation</p>
+            <p className="text-sm italic leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>" {voice.quote}"</p>
+            <div className="flex items-center gap-2 pt-3 border-t border-white/10">
+              <span className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{voice.school}</span>
+            </div>
+          </div>
+
+          <div className="glass p-6 space-y-3 border-l-4 border-brand-teal bg-gradient-to-br from-brand-teal/5 to-brand-blue/5">
+            <p className="text-xs text-brand-teal font-semibold uppercase">After Implementation</p>
+            <p className="text-sm italic leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>" {voice.after}"</p>
+            <div className="flex items-center justify-between pt-3 border-t border-white/10">
+              <span className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{voice.school}</span>
+              <span className="badge-tile bg-brand-teal/20 text-brand-teal">{voice.impact}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Outcomes table with interactive comparison
+  const OutcomesComparison = () => {
+    return (
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-white/10 light:border-slate-200">
+              <th className="text-left py-3 px-4 text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Metric</th>
+              <th className="text-right py-3 px-4 text-sm font-semibold">Traditional</th>
+              <th className="text-right py-3 px-4 text-sm font-semibold text-brand-teal">Transformed</th>
+              <th className="text-right py-3 px-4 text-sm font-semibold">Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            {outcomeData.map((row, idx) => (
+              <tr key={idx} className="border-b border-white/10 light:border-slate-200 hover:bg-white/5 light:hover:bg-slate-100 transition-colors">
+                <td className="py-3 px-4 text-sm">{row.label}</td>
+                <td className="py-3 px-4 text-right text-sm font-semibold" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{row.traditional}%</td>
+                <td className="py-3 px-4 text-right text-sm font-semibold text-brand-teal">{row.transformed}%</td>
+                <td className="py-3 px-4 text-right">
+                  <span className="badge-tile bg-brand-teal/20 text-brand-teal">{row.delta}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   return (
     <div className={theme === 'light' ? 'light' : ''}>
