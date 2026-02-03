@@ -5,7 +5,7 @@ function useTheme() {
     () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
     []
   );
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light'));
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
     const html = document.documentElement;
