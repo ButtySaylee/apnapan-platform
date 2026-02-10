@@ -7,18 +7,35 @@ function ensureMarkerScript(projectId) {
     return;
   }
 
-  if (window.Marker && window.Marker._done) {
+  if (window.__MarkerLoaded) {
     return;
   }
 
-  window.Marker = window.Marker || {};
-  if (window.Marker._done) {
-    return;
-  }
+  window.__MarkerLoaded = true;
+  window.markerConfig = { project: projectId, source: 'vite' };
 
-  window.Marker._done = true;
-  window.Marker._queue = window.Marker._queue || [];
-  window.Marker.config = { project: projectId, source: 'vite' };
+  if (!window.Marker) {
+    window.Marker = { __cs: [] };
+    [
+      'show',
+      'hide',
+      'isVisible',
+      'capture',
+      'cancelCapture',
+      'unload',
+      'reload',
+      'isExtensionInstalled',
+      'setReporter',
+      'clearReporter',
+      'setCustomData',
+      'on',
+      'off',
+    ].forEach((method) => {
+      window.Marker[method] = function (...args) {
+        window.Marker.__cs.push([method, ...args]);
+      };
+    });
+  }
 
   const script = document.createElement('script');
   script.async = true;
@@ -40,7 +57,7 @@ export default function FeedbackButton() {
     ensureMarkerScript(projectId);
 
     const handleReady = () => {
-      if (window.Marker && typeof window.Marker.open === 'function') {
+      if (window.Marker && typeof window.Marker.show === 'function') {
         setIsReady(true);
       }
     };
@@ -56,13 +73,13 @@ export default function FeedbackButton() {
       return;
     }
 
-    if (window.Marker && typeof window.Marker.open === 'function') {
-      window.Marker.open();
+    if (window.Marker && typeof window.Marker.show === 'function') {
+      window.Marker.show();
       return;
     }
 
-    if (window.Marker && window.Marker._queue) {
-      window.Marker._queue.push(['open']);
+    if (window.Marker && window.Marker.__cs) {
+      window.Marker.__cs.push(['show']);
     }
   };
 
