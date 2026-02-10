@@ -4,6 +4,7 @@ import Landing from './pages/Landing';
 import Community from './pages/Community';
 import SchoolPartnership from './pages/SchoolPartnership';
 import BelongingCalculator from './components/BelongingCalculator';
+import FeedbackButton from './components/FeedbackButton';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/schools" element={<SchoolPartnership />} />
         <Route path="/calculator" element={<BelongingCalculator />} />
       </Routes>
+      <FeedbackButton />
     </Router>
   );
 }
