@@ -87,15 +87,5 @@ export default function FeedbackButton() {
     return null;
   }
 
-  return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-brand-blue px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-brand-purple focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple"
-      aria-label="Open feedback tool"
-    >
-      <span className="text-base">📝</span>
-      <span>{isReady ? 'Send feedback' : 'Loading feedback...'}</span>
-    </button>
-  );
+ 
 }
