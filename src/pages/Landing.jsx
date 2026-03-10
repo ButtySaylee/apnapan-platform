@@ -1,31 +1,7 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation } from '../components/ScrollAnimations';
-
-function useTheme() {
-  const prefersDark = useMemo(
-    () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
-    []
-  );
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
-
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.remove('light', 'dark');
-    html.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const listener = (e) => setTheme(e.matches ? 'dark' : 'light');
-    mq.addEventListener('change', listener);
-    return () => mq.removeEventListener('change', listener);
-  }, []);
-
-  const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
-  return { theme, toggle };
-}
+import { useTheme } from '../context/ThemeContext';
 
 export default function Landing() {
   const { theme, toggle } = useTheme();
@@ -81,23 +57,33 @@ export default function Landing() {
               Project Apnapan
             </span>
           </Link>
+          <div className="flex-1" />
+          <Link
+            to="/login"
+            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
+            style={{
+              backgroundColor: theme === 'dark' ? 'rgba(126,184,212,0.15)' : 'rgba(126,184,212,0.2)',
+              color: theme === 'dark' ? '#7eb8d4' : '#1a3558',
+              border: `1px solid ${theme === 'dark' ? 'rgba(126,184,212,0.3)' : 'rgba(126,184,212,0.4)'}`
+            }}
+          >
+            <span>👥</span> Educator Portal
+          </Link>
+          <button
+            onClick={toggle}
+            className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ml-3"
+            style={{
+              backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.06)',
+              borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.12)',
+              color: theme === 'dark' ? '#cbd5e1' : '#334155'
+            }}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            aria-pressed={theme === 'dark'}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? '☀ Light' : '☽ Dark'}
+          </button>
         </header>
-
-        {/* Theme Toggle */}
-        <button
-          onClick={toggle}
-          className="fixed top-4 right-6 z-50 px-3 py-1.5 rounded-lg border text-sm font-medium transition-all"
-          style={{
-            backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.06)',
-            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.12)',
-            color: theme === 'dark' ? '#cbd5e1' : '#334155'
-          }}
-          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          aria-pressed={theme === 'dark'}
-          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        >
-          {theme === 'dark' ? '☀ Light' : '☽ Dark'}
-        </button>
 
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20 md:py-28">

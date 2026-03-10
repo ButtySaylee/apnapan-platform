@@ -87,5 +87,15 @@ export default function FeedbackButton() {
     return null;
   }
 
- 
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      aria-label="Send feedback"
+      title="Send feedback"
+      className="fixed bottom-4 right-4 z-50 rounded-full border border-white/20 bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.02] hover:bg-slate-800"
+    >
+      {isReady ? 'Send feedback' : 'Loading feedback...'}
+    </button>
+  );
 }

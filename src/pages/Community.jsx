@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation, RotateAnimation } from '../components/ScrollAnimations';
+import { useTheme } from '../context/ThemeContext';
 
 const stories = [
   {
@@ -61,31 +62,6 @@ const resources = [
   'Student Voice Survey Template',
 ];
 
-function useTheme() {
-  const prefersDark = useMemo(
-    () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
-    []
-  );
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
-
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.remove('light', 'dark');
-    html.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const listener = (e) => setTheme(e.matches ? 'dark' : 'light');
-    mq.addEventListener('change', listener);
-    return () => mq.removeEventListener('change', listener);
-  }, []);
-
-  const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
-  return { theme, toggle };
-}
-
 export default function Community() {
   const { theme, toggle } = useTheme();
 
@@ -106,8 +82,19 @@ export default function Community() {
               </div>
             </Link>
             <div className="flex-1" />
-            <Link to="/schools" className="text-sm font-medium transition-colors" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }} onMouseEnter={(e) => e.target.style.color = theme === 'dark' ? '#f1f5f9' : '#0f172a'} onMouseLeave={(e) => e.target.style.color = theme === 'dark' ? '#94a3b8' : '#64748b'}>
+            <Link to="/schools" className="text-sm font-medium transition-colors hidden sm:block" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }} onMouseEnter={(e) => e.target.style.color = theme === 'dark' ? '#f1f5f9' : '#0f172a'} onMouseLeave={(e) => e.target.style.color = theme === 'dark' ? '#94a3b8' : '#64748b'}>
               School Partnership
+            </Link>
+            <Link
+              to="/login"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
+              style={{
+                backgroundColor: theme === 'dark' ? 'rgba(126,184,212,0.15)' : 'rgba(126,184,212,0.2)',
+                color: theme === 'dark' ? '#7eb8d4' : '#1a3558',
+                border: `1px solid ${theme === 'dark' ? 'rgba(126,184,212,0.3)' : 'rgba(126,184,212,0.4)'}`
+              }}
+            >
+              <span className="hidden sm:inline">👥</span> Portal
             </Link>
             <button
               onClick={toggle}

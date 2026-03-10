@@ -9,6 +9,12 @@ export function useInView(options = {}) {
   const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
+    // Fallback for environments where IntersectionObserver is unavailable.
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setIsInView(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setIsInView(true);
@@ -70,7 +76,7 @@ export function DropAnimation({
  */
 export function SlideAnimation({
   children,
-  direction = 'left', // 'left' or 'right'
+  direction = 'left', // 'left', 'right', 'up', or 'down'
   delay = 0,
   duration = 0.8,
   distance = 50,
@@ -81,13 +87,17 @@ export function SlideAnimation({
   const directionMap = {
     left: { initial: { x: -distance, opacity: 0 }, animate: { x: 0, opacity: 1 } },
     right: { initial: { x: distance, opacity: 0 }, animate: { x: 0, opacity: 1 } },
+    up: { initial: { y: distance, opacity: 0 }, animate: { y: 0, opacity: 1 } },
+    down: { initial: { y: -distance, opacity: 0 }, animate: { y: 0, opacity: 1 } },
   };
+
+  const activeDirection = directionMap[direction] || directionMap.left;
 
   return (
     <motion.div
       ref={ref}
-      initial={directionMap[direction].initial}
-      animate={isInView ? directionMap[direction].animate : directionMap[direction].initial}
+      initial={activeDirection.initial}
+      animate={isInView ? activeDirection.animate : activeDirection.initial}
       transition={{
         duration,
         delay,
