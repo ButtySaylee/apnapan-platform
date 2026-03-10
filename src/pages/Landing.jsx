@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation } from '../components/ScrollAnimations';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/useTheme';
 
 export default function Landing() {
   const { theme, toggle } = useTheme();

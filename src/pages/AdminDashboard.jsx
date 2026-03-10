@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BlurAnimation, SlideAnimation, StaggerAnimation, DropAnimation } from '../components/ScrollAnimations';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/useTheme';
 
 export default function AdminDashboard() {
   const { theme, toggle } = useTheme();
@@ -56,12 +56,12 @@ export default function AdminDashboard() {
           borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb',
           backdropFilter: 'blur(8px)'
         }}>
-          <div className="container-wide flex items-center gap-4 py-4">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-10 w-10 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1 shadow-lg" />
+          <div className="container-wide flex items-center gap-2 sm:gap-4 py-3 sm:py-4">
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1 shadow-lg" />
               <div>
-                <h1 className="text-lg font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Admin Dashboard</h1>
-                <p className="text-xs" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>Platform Management</p>
+                <h1 className="text-sm sm:text-lg font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Admin Dashboard</h1>
+                <p className="hidden sm:block text-xs" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>Platform Management</p>
               </div>
             </Link>
             <div className="flex-1" />
@@ -70,7 +70,7 @@ export default function AdminDashboard() {
             </div>
             <button
               onClick={toggle}
-              className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all"
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-medium transition-all"
               style={{
                 backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
                 borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#e2e8f0',
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
             </button>
             <button
               onClick={handleLogout}
-              className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-500"
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-medium transition-all hover:bg-red-500/10 hover:border-red-500/30 hover:text-red-500"
               style={{
                 borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#e2e8f0',
                 color: theme === 'dark' ? '#cbd5e1' : '#475569'

@@ -1,14 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
+function shouldReduceMotionByContext() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 640px)').matches;
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const saveData = Boolean(connection && connection.saveData);
+  const effectiveType = connection && connection.effectiveType ? connection.effectiveType : '';
+  const slowConnection = effectiveType.includes('2g');
+
+  return prefersReduced || saveData || (smallScreen && slowConnection);
+}
+
 /**
  * Hook to detect when an element comes into view
  */
 export function useInView(options = {}) {
+  const {
+    triggerOnce = false,
+    threshold = 0.2,
+    rootMargin = '0px',
+  } = options;
+
   const ref = useRef(null);
-  const [isInView, setIsInView] = useState(false);
+  const [shouldReduceMotion] = useState(() => shouldReduceMotionByContext());
+  const [isInView, setIsInView] = useState(shouldReduceMotion);
 
   useEffect(() => {
+    if (shouldReduceMotion) {
+      setIsInView(true);
+      return;
+    }
+
     // Fallback for environments where IntersectionObserver is unavailable.
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
       setIsInView(true);
@@ -19,13 +46,13 @@ export function useInView(options = {}) {
       if (entry.isIntersecting) {
         setIsInView(true);
         // Optional: stop observing after first trigger
-        if (options.triggerOnce) {
+        if (triggerOnce) {
           observer.unobserve(entry.target);
         }
       }
     }, {
-      threshold: options.threshold || 0.2,
-      rootMargin: options.rootMargin || '0px',
+      threshold,
+      rootMargin,
     });
 
     if (ref.current) {
@@ -37,7 +64,7 @@ export function useInView(options = {}) {
         observer.unobserve(ref.current);
       }
     };
-  }, [options]);
+  }, [rootMargin, shouldReduceMotion, threshold, triggerOnce]);
 
   return [ref, isInView];
 }
@@ -366,16 +393,3 @@ export function CounterAnimation({
   return <span ref={ref}>{`${prefix}${from}${suffix}`}</span>;
 }
 
-export default {
-  DropAnimation,
-  SlideAnimation,
-  ScaleAnimation,
-  RotateAnimation,
-  StaggerAnimation,
-  FadeAnimation,
-  BlurAnimation,
-  HoverScaleContainer,
-  ParallaxContainer,
-  CounterAnimation,
-  useInView,
-};

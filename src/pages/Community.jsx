@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation, RotateAnimation } from '../components/ScrollAnimations';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/useTheme';
 
 const stories = [
   {
@@ -91,12 +91,12 @@ export default function Community() {
           borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb',
           backdropFilter: 'blur(8px)'
         }}>
-          <div className="container-wide flex items-center gap-4 py-4">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-10 w-10 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1 shadow-lg" loading="lazy" />
+          <div className="container-wide flex items-center gap-2 sm:gap-4 py-3 sm:py-4">
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1 shadow-lg" loading="lazy" />
               <div>
-                <h1 className="text-lg font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Project Apnapan</h1>
-                <p className="text-xs" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>Community Hub</p>
+                <h1 className="text-sm sm:text-lg font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Project Apnapan</h1>
+                <p className="hidden sm:block text-xs" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>Community Hub</p>
               </div>
             </Link>
             <div className="flex-1" />
@@ -105,7 +105,7 @@ export default function Community() {
             </Link>
             <Link
               to="/login"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all"
               style={{
                 backgroundColor: theme === 'dark' ? 'rgba(126,184,212,0.15)' : 'rgba(126,184,212,0.2)',
                 color: theme === 'dark' ? '#7eb8d4' : '#1a3558',
@@ -116,7 +116,7 @@ export default function Community() {
             </Link>
             <button
               onClick={toggle}
-              className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all"
+              className="px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-medium transition-all"
               style={{
                 backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
                 borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#e2e8f0',
