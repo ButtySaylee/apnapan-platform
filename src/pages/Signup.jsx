@@ -343,7 +343,7 @@ export default function Signup() {
           }}>
             <h3 className="text-xl font-bold">Verify Your Email</h3>
             <p className="text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
-              Your account is created. Please log in to the email address you used to sign up and click the verification link before signing in.
+              Your account is has been created. You can now Login.
             </p>
             <p className="text-sm font-semibold" style={{ color: theme === 'dark' ? '#93c5fd' : '#1d4ed8' }}>
               {verificationEmail}
