@@ -1,10 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation, RotateAnimation } from '../components/ScrollAnimations';
 import { useTheme } from '../context/useTheme';
+import { useAuth } from '../context/useAuth';
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
-const stories = [
+const fallbackStories = [
   {
+    id: 's1',
     title: 'Aarav builds a circle of trust',
     role: 'Grade 7 · Delhi Public School',
     format: 'Audio diary',
@@ -13,6 +16,7 @@ const stories = [
     media: '🎧',
   },
   {
+    id: 's2',
     title: 'Priya codes for empathy',
     role: 'Grade 8 · St. Mary\'s Academy',
     format: 'Short film',
@@ -21,6 +25,7 @@ const stories = [
     media: '🎬',
   },
   {
+    id: 's3',
     title: 'Rohan maps belonging',
     role: 'Grade 9 · Greenfield International',
     format: 'Interactive map',
@@ -44,9 +49,63 @@ const insights = [
 ];
 
 const team = [
-  { name: 'Ipsita Gupta', role: 'City Manager', bio: 'Leads belonging programs across NCR schools.', img: 'ipsita.png' },
-  { name: 'Alok Sharma', role: 'Community Engagement Lead', bio: 'Co-creates interventions with teachers and students.', img: 'alok.png' },
-  { name: 'Butty Saylee', role: 'Tech & Digital Strategy Lead', bio: 'Builds humane digital tools for stories and access.', img: 'butty.jpg' },
+  {
+    slug: 'ipsita-gupta',
+    name: 'Ipsita Gupta',
+    role: 'City Manager',
+    bio: 'Leads belonging programs across NCR schools.',
+    img: 'ipsita.png',
+    location: 'New Delhi, India',
+    experienceYears: '8+ years',
+    email: 'ipsita@apnapan.org',
+    linkedin: 'https://www.linkedin.com/in/ipsita-gupta',
+    profile:
+      'Ipsita leads multi-school implementation of belonging programs with a strong focus on measurable student outcomes. She has worked with school leaders, counselors, and teacher cohorts to design routines that improve emotional safety and classroom participation. Her portfolio includes city-wide school improvement pilots, peer support systems, and educator facilitation frameworks that translate social-emotional goals into daily teaching practice.',
+    highlights: [
+      'Led implementation across 15+ schools with contextual adaptation by grade band.',
+      'Designed facilitator playbooks for student circles and reflection routines.',
+      'Built school leadership reporting rhythms to track belonging indicators monthly.',
+      'Mentored teacher champions on low-cost intervention strategies.',
+    ],
+  },
+  {
+    slug: 'alok-sharma',
+    name: 'Alok Sharma',
+    role: 'Community Engagement Lead',
+    bio: 'Co-creates interventions with teachers and students.',
+    img: 'alok.png',
+    location: 'Gurugram, India',
+    experienceYears: '7+ years',
+    email: 'alok@apnapan.org',
+    linkedin: 'https://www.linkedin.com/in/alok-sharma',
+    profile:
+      'Alok specializes in partnership design between schools, families, and student communities. He brings a field-first approach to co-creation, ensuring that interventions are practical for classrooms and meaningful for students. His experience spans teacher capacity building, parent dialogue forums, and youth-led community projects that strengthen trust within school ecosystems.',
+    highlights: [
+      'Built educator-student co-design workshops now used in multiple partner schools.',
+      'Facilitated community listening labs to surface local belonging barriers.',
+      'Developed mentorship circles that improved student participation consistency.',
+      'Coordinated stakeholder campaigns linking school climate and attendance outcomes.',
+    ],
+  },
+  {
+    slug: 'butty-saylee',
+    name: 'Butty Saylee',
+    role: 'Tech & Digital Strategy Lead',
+    bio: 'Builds humane digital tools for stories and access.',
+    img: 'butty.jpg',
+    location: 'Bengaluru, India',
+    experienceYears: '6+ years',
+    email: 'butty@apnapan.org',
+    linkedin: 'https://www.linkedin.com/in/butty-saylee',
+    profile:
+      'Butty leads digital product strategy for Apnapan, focusing on accessible and ethical tools for educators and school teams. She has experience building education workflows across resource sharing, story moderation, and evidence capture. Her work bridges pedagogy and technology by prioritizing simplicity, safety, and usability for real school contexts with diverse digital readiness.',
+    highlights: [
+      'Designed role-based educator/admin workflows for resource sharing and moderation.',
+      'Implemented analytics-informed product decisions to improve adoption and retention.',
+      'Built scalable content operations for teacher-uploaded resources and story pipelines.',
+      'Championed accessibility and low-friction UX for mixed-device school environments.',
+    ],
+  },
 ];
 
 const partners = [
@@ -55,11 +114,10 @@ const partners = [
   { name: 'Bright Futures NGO', role: 'Community outreach', impact: 'Peer mentoring programs across partner schools.', img: 'brightfuture.png', link: 'https://brightfutures.org' },
 ];
 
-const resources = [
-  'Inclusive Teaching Toolkit (PDF)',
-  'Belonging Circle Prompts (Slides)',
-  'Emotional Well-being Activity Sheet',
-  'Student Voice Survey Template',
+const fallbackPublicResources = [
+  { id: 'f1', title: 'Inclusive Teaching Toolkit', category: 'Documentation', file_url: '', downloads: 128, teacher_name: 'Apnapan Team', created_at: '2024-03-10' },
+  { id: 'f2', title: 'Belonging Circle Prompts', category: 'Activities', file_url: '', downloads: 96, teacher_name: 'Apnapan Team', created_at: '2024-03-08' },
+  { id: 'f3', title: 'Student Voice Survey Template', category: 'Assessments', file_url: '', downloads: 77, teacher_name: 'Apnapan Team', created_at: '2024-03-05' },
 ];
 
 const dataPulse = [
@@ -82,6 +140,213 @@ const dataPulse = [
 
 export default function Community() {
   const { theme, toggle } = useTheme();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { name: teamSlug } = useParams();
+  const profileCloseButtonRef = useRef(null);
+  const [publicResources, setPublicResources] = useState([]);
+  const [loadingPublicResources, setLoadingPublicResources] = useState(true);
+  const [stories, setStories] = useState(fallbackStories);
+  const [loadingStories, setLoadingStories] = useState(true);
+  const [showStoryModal, setShowStoryModal] = useState(false);
+  const [storyText, setStoryText] = useState('');
+  const [storyAuthorName, setStoryAuthorName] = useState('');
+  const [storySchoolName, setStorySchoolName] = useState('');
+  const [submittingStory, setSubmittingStory] = useState(false);
+  const [storyError, setStoryError] = useState('');
+  const [storySuccess, setStorySuccess] = useState('');
+  const [selectedTeamMember, setSelectedTeamMember] = useState(null);
+
+  const resourcesWithLinks = publicResources.filter((res) => Boolean(res.file_url));
+
+  useEffect(() => {
+    if (!teamSlug) {
+      setSelectedTeamMember(null);
+      return;
+    }
+
+    const matched = team.find((member) => member.slug === teamSlug) || null;
+    setSelectedTeamMember(matched);
+  }, [teamSlug]);
+
+  useEffect(() => {
+    if (!selectedTeamMember) {
+      return;
+    }
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedTeamMember(null);
+        navigate('/community');
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [selectedTeamMember, navigate]);
+
+  useEffect(() => {
+    if (selectedTeamMember && profileCloseButtonRef.current) {
+      profileCloseButtonRef.current.focus();
+    }
+  }, [selectedTeamMember]);
+
+  useEffect(() => {
+    async function fetchPublicResources() {
+      setLoadingPublicResources(true);
+
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase
+          .from('resources')
+          .select('id, title, category, description, file_url, downloads, created_at, profiles:teacher_id(full_name)')
+          .eq('is_public', true)
+          .order('created_at', { ascending: false });
+
+        if (!error && data) {
+          setPublicResources(
+            data.map(item => ({
+              ...item,
+              teacher_name: item.profiles?.full_name || 'Educator',
+            }))
+          );
+          setLoadingPublicResources(false);
+          return;
+        }
+      }
+
+      setPublicResources(fallbackPublicResources);
+      setLoadingPublicResources(false);
+    }
+
+    fetchPublicResources();
+  }, []);
+
+  useEffect(() => {
+    async function fetchStories() {
+      setLoadingStories(true);
+
+      if (isSupabaseConfigured && supabase) {
+        const { data, error } = await supabase
+          .from('community_stories')
+          .select('id, story_text, author_name, school_name, status, is_public, created_at')
+          .eq('status', 'approved')
+          .eq('is_public', true)
+          .order('created_at', { ascending: false });
+
+        if (!error && data) {
+          const mapped = data.map((row, idx) => ({
+            id: row.id,
+            title: `Community Story ${idx + 1}`,
+            role: row.school_name ? `${row.author_name || 'Educator'} · ${row.school_name}` : (row.author_name || 'Educator Story'),
+            format: 'Community story',
+            summary: row.story_text,
+            media: '📝',
+          }));
+          setStories(mapped.length > 0 ? mapped : fallbackStories);
+          setLoadingStories(false);
+          return;
+        }
+      }
+
+      setStories(fallbackStories);
+      setLoadingStories(false);
+    }
+
+    fetchStories();
+  }, []);
+
+  const handleOpenStoryModal = () => {
+    setStoryText('');
+    setStoryAuthorName(user?.name || '');
+    setStorySchoolName(user?.school || '');
+    setStoryError('');
+    setStorySuccess('');
+    setShowStoryModal(true);
+  };
+
+  const handleOpenTeamProfile = (member) => {
+    setSelectedTeamMember(member);
+    navigate(`/team/${member.slug}`);
+  };
+
+  const handleCloseTeamProfile = () => {
+    setSelectedTeamMember(null);
+    navigate('/community');
+  };
+
+  const handleSubmitStory = async (e) => {
+    e.preventDefault();
+    const clean = storyText.trim();
+    const cleanName = storyAuthorName.trim();
+    const cleanSchool = storySchoolName.trim();
+
+    if (!cleanName) {
+      setStoryError('Please enter your name.');
+      return;
+    }
+    if (!cleanSchool) {
+      setStoryError('Please enter your school.');
+      return;
+    }
+
+    if (clean.length < 20) {
+      setStoryError('Please write at least 20 characters.');
+      return;
+    }
+    if (clean.length > 900) {
+      setStoryError('Please keep it under 900 characters.');
+      return;
+    }
+
+    setSubmittingStory(true);
+    setStoryError('');
+
+    try {
+      if (isSupabaseConfigured && supabase) {
+        if (!user?.id) {
+          throw new Error('Please sign in first to share your story.');
+        }
+
+        const { data, error } = await supabase
+          .from('community_stories')
+          .insert({
+            author_id: user.id,
+            author_name: cleanName,
+            school_name: cleanSchool,
+            story_text: clean,
+            status: 'pending',
+            is_public: false,
+          })
+          .select('id, story_text, created_at')
+          .single();
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        setStorySuccess('Story submitted. It will appear after admin approval.');
+      } else {
+        const localStory = {
+          id: `local-${Date.now()}`,
+          title: 'Your Story',
+          role: `${cleanName} · ${cleanSchool}`,
+          format: 'Community story',
+          summary: clean,
+          media: '📝',
+        };
+        setStories(prev => [localStory, ...prev]);
+        setStorySuccess('Story shared locally (dev fallback mode).');
+      }
+
+      if (!isSupabaseConfigured) {
+        setShowStoryModal(false);
+      }
+    } catch (err) {
+      setStoryError(err.message || 'Unable to save your story right now.');
+    } finally {
+      setSubmittingStory(false);
+    }
+  };
 
   return (
     <div className={theme === 'light' ? 'light' : ''}>
@@ -141,8 +406,7 @@ export default function Community() {
                     <h2 className="headline">Voices and stories from educators and students transforming schools.</h2>
                     <p className="subhead">Explore the community hub: share your story, learn from others, and co-create belonging-centered solutions.</p>
                     <div className="flex flex-wrap gap-4">
-                      <button className="btn btn-primary">Share Your Story</button>
-                      <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Browse Resources</button>
+                      <button onClick={handleOpenStoryModal} className="btn btn-primary">Share Your Story</button>
                     </div>
                   </div>
                 </SlideAnimation>
@@ -229,12 +493,17 @@ export default function Community() {
 
           {/* Student Stories */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-6 sm:p-8 md:p-10">
+            <section id="voices-from-classroom" className="card-surface p-6 sm:p-8 md:p-10">
               <h2 className="section-title">Voices from the Classroom</h2>
+              {loadingStories && (
+                <p className="text-center text-sm mb-6" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                  Loading stories...
+                </p>
+              )}
               <StaggerAnimation delay={0.2} staggerDelay={0.1}>
                 <div className="grid-auto">
-                  {stories.map((story) => (
-                    <DropAnimation key={story.title} distance={40}>
+                  {!loadingStories && stories.map((story) => (
+                    <DropAnimation key={story.id} distance={40}>
                       <div className="tilt-card card-surface p-6 space-y-3 hover:shadow-lg transition-shadow">
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{story.media}</span>
@@ -249,6 +518,11 @@ export default function Community() {
                       </div>
                     </DropAnimation>
                   ))}
+                  {!loadingStories && stories.length === 0 && (
+                    <p className="text-center text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                      No stories yet. Be the first to share one.
+                    </p>
+                  )}
                 </div>
               </StaggerAnimation>
             </section>
@@ -275,15 +549,57 @@ export default function Community() {
               </div>
             </BlurAnimation>
             <BlurAnimation delay={0.1} duration={0.8}>
-              <div className="card-surface p-6 sm:p-8 md:p-10 space-y-6">
-                <h2 className="section-title">Resources</h2>
+              <div id="shared-resources" className="card-surface p-6 sm:p-8 md:p-10 space-y-6">
+                <h2 className="section-title">Shared Resources</h2>
                 <StaggerAnimation delay={0.3} staggerDelay={0.1}>
                   <div className="space-y-3">
-                    {resources.map((res) => (
-                      <DropAnimation key={res} distance={20}>
-                        <div className="tilt-card card-surface p-3 text-sm flex items-center gap-3 hover:shadow-lg transition-shadow">
-                          <span className="text-lg">📄</span>
-                          <span className="" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{res}</span>
+                    {loadingPublicResources && (
+                      <div className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                        Loading shared resources...
+                      </div>
+                    )}
+
+                    {!loadingPublicResources && resourcesWithLinks.length === 0 && (
+                      <div className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                        No resources have been shared yet.
+                      </div>
+                    )}
+
+                    {!loadingPublicResources && resourcesWithLinks.map((res) => (
+                      <DropAnimation key={res.id} distance={20}>
+                        <div className="tilt-card card-surface p-4 text-sm space-y-3 hover:shadow-lg transition-shadow">
+                          <div className="flex items-start gap-3">
+                            <span className="text-lg">📄</span>
+                            <div className="flex-1">
+                              <p className="font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>{res.title}</p>
+                              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                                <span>{res.category || 'General'}</span>
+                                <span>•</span>
+                                <span>By {res.teacher_name}</span>
+                                <span>•</span>
+                                <span>{res.downloads || 0} downloads</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-end gap-2">
+                            <a
+                              href={res.file_url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-3 py-2 text-xs rounded-lg border transition-all hover:bg-white/5"
+                              style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#e2e8f0' }}
+                            >
+                              View
+                            </a>
+                            <a
+                              href={res.file_url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn btn-primary py-2 px-3 text-xs"
+                            >
+                              Download
+                            </a>
+                          </div>
                         </div>
                       </DropAnimation>
                     ))}
@@ -301,12 +617,20 @@ export default function Community() {
                 <div className="grid-auto">
                   {team.map((member) => (
                     <RotateAnimation key={member.name} angle={-8}>
-                      <div className="tilt-card card-surface p-6 space-y-3 text-center hover:shadow-lg transition-shadow">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenTeamProfile(member)}
+                        className="tilt-card card-surface p-6 space-y-3 text-center hover:shadow-lg transition-shadow w-full"
+                        aria-label={`View full profile for ${member.name}`}
+                      >
                         <img src={`/images/${member.img}`} alt={member.name} className="h-20 w-20 rounded-full object-cover border border-white/20 light:border-slate-200 mx-auto" loading="lazy" />
                         <h3 className="text-lg font-semibold">{member.name}</h3>
                         <p className="text-sm text-brand-teal font-semibold">{member.role}</p>
                         <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{member.bio}</p>
-                      </div>
+                        <p className="text-xs font-semibold" style={{ color: theme === 'dark' ? '#93c5fd' : '#1d4ed8' }}>
+                          View Full Profile
+                        </p>
+                      </button>
                     </RotateAnimation>
                   ))}
                 </div>
@@ -344,7 +668,6 @@ export default function Community() {
               <StaggerAnimation delay={0.3} staggerDelay={0.1} direction="up">
                 <div className="flex flex-wrap gap-4 justify-center">
                   <button className="btn btn-primary">Book a walkthrough</button>
-                  <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Download pilot kit</button>
                   <Link to="/calculator" className="btn btn-primary">Calculate Your Transformation</Link>
                 </div>
               </StaggerAnimation>
@@ -360,6 +683,224 @@ export default function Community() {
             © 2026 Project Apnapan | Designed with empathy and innovation
           </div>
         </footer>
+
+        {showStoryModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.65)' }}>
+            <div className="w-full max-w-xl rounded-xl border p-6 space-y-5" style={{
+              backgroundColor: theme === 'dark' ? '#161b22' : '#ffffff',
+              borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+              boxShadow: theme === 'dark' ? undefined : '0 18px 44px rgba(15,23,42,0.16)',
+            }}>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold">Share Your Story</h3>
+                <button
+                  onClick={() => setShowStoryModal(false)}
+                  className="text-2xl leading-none"
+                  style={{ color: theme === 'dark' ? '#e2e8f0' : '#334155' }}
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmitStory} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
+                      Your name
+                    </label>
+                    <input
+                      type="text"
+                      value={storyAuthorName}
+                      onChange={(e) => setStoryAuthorName(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-lg border text-sm outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+                      style={{
+                        backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f8fafc',
+                        borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+                        color: theme === 'dark' ? '#f1f5f9' : '#0f172a',
+                      }}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
+                      School
+                    </label>
+                    <input
+                      type="text"
+                      value={storySchoolName}
+                      onChange={(e) => setStorySchoolName(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-lg border text-sm outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+                      style={{
+                        backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f8fafc',
+                        borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+                        color: theme === 'dark' ? '#f1f5f9' : '#0f172a',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <label className="block text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
+                  Your story
+                </label>
+                <textarea
+                  value={storyText}
+                  onChange={(e) => setStoryText(e.target.value)}
+                  rows={6}
+                  placeholder="Share a real classroom moment, what changed, and what others can learn..."
+                  className="w-full px-4 py-3 rounded-lg border text-sm outline-none resize-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+                  style={{
+                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f8fafc',
+                    borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+                    color: theme === 'dark' ? '#f1f5f9' : '#0f172a',
+                  }}
+                />
+                <div className="flex items-center justify-between text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                  <span>20-900 characters</span>
+                  <span>{storyText.trim().length}/900</span>
+                </div>
+
+                {storyError && (
+                  <p className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+                    {storyError}
+                  </p>
+                )}
+
+                {storySuccess && (
+                  <p className="text-sm text-green-600 bg-green-500/10 border border-green-500/20 rounded-lg px-4 py-3">
+                    {storySuccess}
+                  </p>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowStoryModal(false)}
+                    className="flex-1 px-4 py-2.5 rounded-lg border text-sm font-medium"
+                    style={{
+                      borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+                      color: theme === 'dark' ? '#cbd5e1' : '#334155',
+                    }}
+                    disabled={submittingStory}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 btn btn-primary"
+                    disabled={submittingStory}
+                  >
+                    {submittingStory ? 'Saving...' : 'Save Story'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {selectedTeamMember && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+            onClick={handleCloseTeamProfile}
+          >
+            <div
+              className="w-full max-w-2xl rounded-xl border p-6 sm:p-8 space-y-5 max-h-[90vh] overflow-y-auto"
+              style={{
+              backgroundColor: theme === 'dark' ? '#161b22' : '#ffffff',
+              borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+              boxShadow: theme === 'dark' ? undefined : '0 18px 44px rgba(15,23,42,0.16)',
+              }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="team-profile-title"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-center justify-between">
+                <h3 id="team-profile-title" className="text-2xl font-bold">Team Profile</h3>
+                <button
+                  onClick={handleCloseTeamProfile}
+                  className="text-2xl leading-none"
+                  style={{ color: theme === 'dark' ? '#e2e8f0' : '#334155' }}
+                  aria-label="Close"
+                  ref={profileCloseButtonRef}
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-5 sm:items-center">
+                <img
+                  src={`/images/${selectedTeamMember.img}`}
+                  alt={selectedTeamMember.name}
+                  className="h-24 w-24 rounded-full object-cover border border-white/20 light:border-slate-300"
+                />
+                <div>
+                  <h4 className="text-xl font-bold">{selectedTeamMember.name}</h4>
+                  <p className="text-sm font-semibold text-brand-teal">{selectedTeamMember.role}</p>
+                  <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+                    {selectedTeamMember.location} · {selectedTeamMember.experienceYears}
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h5 className="text-sm font-bold uppercase tracking-wide" style={{ color: theme === 'dark' ? '#93c5fd' : '#1d4ed8' }}>
+                  Experience Overview
+                </h5>
+                <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
+                  {selectedTeamMember.profile}
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <h5 className="text-sm font-bold uppercase tracking-wide" style={{ color: theme === 'dark' ? '#93c5fd' : '#1d4ed8' }}>
+                  Key Highlights
+                </h5>
+                <ul className="space-y-2">
+                  {selectedTeamMember.highlights.map((item) => (
+                    <li key={item} className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
+                      • {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="space-y-3">
+                <h5 className="text-sm font-bold uppercase tracking-wide" style={{ color: theme === 'dark' ? '#93c5fd' : '#1d4ed8' }}>
+                  Connect
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={`mailto:${selectedTeamMember.email}`}
+                    className="px-3 py-2 rounded-lg border text-sm font-medium"
+                    style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1' }}
+                  >
+                    Email
+                  </a>
+                  <a
+                    href={selectedTeamMember.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3 py-2 rounded-lg border text-sm font-medium"
+                    style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1' }}
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleCloseTeamProfile}
+                  className="btn btn-primary"
+                >
+                  Close Profile
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

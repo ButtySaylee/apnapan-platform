@@ -29,6 +29,7 @@ function useTheme() {
 
 const BelongingCalculator = () => {
   const { theme } = useTheme();
+  const isLight = theme === 'light';
   const [step, setStep] = useState('input'); // 'input' or 'results'
   const [formData, setFormData] = useState({
     schoolName: '',
@@ -140,7 +141,7 @@ const BelongingCalculator = () => {
     <div ref={scrollToResultsRef} className="space-y-8">
       <BlurAnimation delay={0} duration={0.8}>
         <div className="text-center space-y-3 mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
+          <h2 className="text-3xl md:text-4xl font-bold" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>
             {results.schoolName}'s Transformation Roadmap
           </h2>
           <p className="text-lg" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
@@ -155,9 +156,14 @@ const BelongingCalculator = () => {
           <motion.div
             key={months}
             className="glass p-8 rounded-2xl space-y-6 border border-brand-teal/20"
+            style={{
+              backgroundColor: isLight ? '#ffffff' : undefined,
+              borderColor: isLight ? '#cbd5e1' : undefined,
+              boxShadow: isLight ? '0 8px 24px rgba(15,23,42,0.08)' : undefined,
+            }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+              <h3 className="text-2xl font-bold flex items-center gap-3" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>
                 <span className="text-3xl">
                   {months === 6 ? '📍' : months === 12 ? '🎯' : '🚀'}
                 </span>
@@ -186,7 +192,11 @@ const BelongingCalculator = () => {
                   <motion.div
                     key={metric.key}
                     whileHover={{ scale: 1.02 }}
-                    className="p-4 bg-white/5 rounded-lg border border-white/10 space-y-3"
+                    className="p-4 rounded-lg border space-y-3"
+                    style={{
+                      backgroundColor: isLight ? '#f8fafc' : 'rgba(255,255,255,0.05)',
+                      borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.1)',
+                    }}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-2xl">{metric.icon}</span>
@@ -195,15 +205,15 @@ const BelongingCalculator = () => {
                       </span>
                     </div>
 
-                    <p className="text-sm font-semibold text-slate-200">{metric.label}</p>
+                    <p className="text-sm font-semibold" style={{ color: isLight ? '#334155' : '#e2e8f0' }}>{metric.label}</p>
 
                     {/* Before/After */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
                         <span className="" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Now</span>
-                        <span className="font-bold text-white">{current}%</span>
+                        <span className="font-bold" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>{current}%</span>
                       </div>
-                      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.1)' }}>
                         <motion.div
                           initial={{ width: '0%' }}
                           animate={{ width: `${current}%` }}
@@ -216,7 +226,7 @@ const BelongingCalculator = () => {
                         <span className="" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Predicted</span>
                         <span className="font-bold text-brand-teal">{predicted}%</span>
                       </div>
-                      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.1)' }}>
                         <motion.div
                           initial={{ width: '0%' }}
                           animate={{ width: `${predicted}%` }}
@@ -259,7 +269,7 @@ const BelongingCalculator = () => {
       {/* Key Insights */}
       <BlurAnimation delay={0.3} duration={0.8}>
         <motion.div className="glass p-8 rounded-2xl space-y-4 border border-brand-purple/20">
-          <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+          <h3 className="text-2xl font-bold flex items-center gap-3" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>
             📊 Key Insights for {results.schoolName}
           </h3>
 
@@ -286,10 +296,11 @@ const BelongingCalculator = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 + idx * 0.15 }}
-                className="p-4 bg-white/5 rounded-lg space-y-2"
+                className="p-4 rounded-lg space-y-2"
+                style={{ backgroundColor: isLight ? '#f8fafc' : 'rgba(255,255,255,0.05)', border: isLight ? '1px solid #cbd5e1' : 'none' }}
               >
                 <p className="text-xs text-brand-teal uppercase font-semibold">{insight.title}</p>
-                <p className="text-lg font-bold text-white">{insight.value}</p>
+                <p className="text-lg font-bold" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>{insight.value}</p>
                 <p className="text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{insight.desc}</p>
               </motion.div>
             ))}
@@ -300,7 +311,7 @@ const BelongingCalculator = () => {
       {/* Next Steps */}
       <BlurAnimation delay={0.5} duration={0.8}>
         <motion.div className="glass p-8 rounded-2xl space-y-4 border border-brand-blue/20">
-          <h3 className="text-2xl font-bold text-white">Next Steps</h3>
+          <h3 className="text-2xl font-bold" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>Next Steps</h3>
           <StaggerAnimation delay={0} staggerDelay={0.1} direction="up">
             <div className="space-y-3">
               {[
@@ -312,24 +323,30 @@ const BelongingCalculator = () => {
                 <motion.div
                   key={idx}
                   whileHover={{ x: 8 }}
-                  className="flex gap-3 items-start p-3 rounded-lg hover:bg-white/5 transition-colors"
+                  className="flex gap-3 items-start p-3 rounded-lg transition-colors"
+                  style={{ backgroundColor: isLight ? '#f8fafc' : 'transparent', border: isLight ? '1px solid #cbd5e1' : 'none' }}
                 >
                   <span className="text-lg flex-shrink-0">
                     {idx === 0 ? '📞' : idx === 1 ? '🗺️' : idx === 2 ? '📚' : '💰'}
                   </span>
-                  <p className="text-slate-200">{step}</p>
+                  <p style={{ color: isLight ? '#334155' : '#e2e8f0' }}>{step}</p>
                 </motion.div>
               ))}
             </div>
           </StaggerAnimation>
 
-          <div className="flex gap-4 mt-6 pt-6 border-t border-white/10">
+          <div className="flex gap-4 mt-6 pt-6 border-t" style={{ borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.1)' }}>
             <button
               onClick={() => {
                 setStep('input');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="flex-1 px-6 py-3 bg-white/10 text-white font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+              className="flex-1 px-6 py-3 font-semibold rounded-lg border transition-colors"
+              style={{
+                backgroundColor: isLight ? '#f8fafc' : 'rgba(255,255,255,0.1)',
+                color: isLight ? '#334155' : '#f8fafc',
+                borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.2)',
+              }}
             >
               Try Another Scenario
             </button>
@@ -353,7 +370,14 @@ const BelongingCalculator = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4">
+    <div
+      className="min-h-screen py-12 px-4"
+      style={{
+        background: isLight
+          ? 'linear-gradient(180deg, #e9eff6 0%, #f8fafc 42%)'
+          : 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+      }}
+    >
       <div className="max-w-4xl mx-auto">
         {step === 'input' ? (
           <BlurAnimation delay={0} duration={0.8}>
@@ -362,9 +386,16 @@ const BelongingCalculator = () => {
               initial="hidden"
               animate="visible"
               className="glass p-8 md:p-10 rounded-2xl space-y-6"
+              style={{
+                backgroundColor: isLight ? '#ffffff' : undefined,
+                borderColor: isLight ? '#cbd5e1' : undefined,
+                borderWidth: isLight ? 1 : undefined,
+                borderStyle: isLight ? 'solid' : undefined,
+                boxShadow: isLight ? '0 10px 28px rgba(15,23,42,0.08)' : undefined,
+              }}
             >
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2 text-white">
+                <h2 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>
                   Discover Your Belonging Potential
                 </h2>
                 <p className="text-lg" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
@@ -376,7 +407,7 @@ const BelongingCalculator = () => {
                 {/* School Info */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-200">School Name</label>
+                    <label className="text-sm font-semibold" style={{ color: isLight ? '#334155' : '#e2e8f0' }}>School Name</label>
                     <input
                       type="text"
                       name="schoolName"
@@ -384,12 +415,17 @@ const BelongingCalculator = () => {
                       value={formData.schoolName}
                       onChange={handleInputChange}
                       maxLength="150"
-                      className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-brand-blue transition-colors"
+                      className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-brand-blue transition-colors"
+                      style={{
+                        backgroundColor: isLight ? '#f8fafc' : 'rgba(255,255,255,0.1)',
+                        borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.2)',
+                        color: isLight ? '#0f172a' : '#f8fafc',
+                      }}
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-200">Student Count</label>
+                    <label className="text-sm font-semibold" style={{ color: isLight ? '#334155' : '#e2e8f0' }}>Student Count</label>
                     <input
                       type="number"
                       name="studentCount"
@@ -397,14 +433,19 @@ const BelongingCalculator = () => {
                       value={formData.studentCount}
                       onChange={handleInputChange}
                       maxLength="6"
-                      className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-brand-blue transition-colors"
+                      className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-brand-blue transition-colors"
+                      style={{
+                        backgroundColor: isLight ? '#f8fafc' : 'rgba(255,255,255,0.1)',
+                        borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.2)',
+                        color: isLight ? '#0f172a' : '#f8fafc',
+                      }}
                     />
                   </div>
                 </div>
 
                 {/* Current Metrics */}
-                <div className="mt-8 pt-8 border-t border-white/10 space-y-6">
-                  <h3 className="text-xl font-bold text-white">Your Current Metrics</h3>
+                <div className="mt-8 pt-8 border-t space-y-6" style={{ borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.1)' }}>
+                  <h3 className="text-xl font-bold" style={{ color: isLight ? '#0f172a' : '#f8fafc' }}>Your Current Metrics</h3>
 
                   {[
                     { label: 'Student Belonging Score', key: 'currentBelonging', description: 'Feel accepted and valued' },
@@ -415,7 +456,7 @@ const BelongingCalculator = () => {
                     <div key={metric.key} className="space-y-3">
                       <div className="flex items-center justify-between">
                         <div>
-                          <label className="text-sm font-semibold text-slate-200 block">{metric.label}</label>
+                          <label className="text-sm font-semibold block" style={{ color: isLight ? '#334155' : '#e2e8f0' }}>{metric.label}</label>
                           <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{metric.description}</p>
                         </div>
                         <div className="text-right">
@@ -435,7 +476,9 @@ const BelongingCalculator = () => {
                           onChange={handleInputChange}
                           className="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer slider"
                           style={{
-                            background: `linear-gradient(to right, rgb(52, 152, 219) 0%, rgb(52, 152, 219) ${formData[metric.key]}%, rgba(255,255,255,0.1) ${formData[metric.key]}%, rgba(255,255,255,0.1) 100%)`,
+                            background: isLight
+                              ? `linear-gradient(to right, rgb(52, 152, 219) 0%, rgb(52, 152, 219) ${formData[metric.key]}%, rgba(203,213,225,0.9) ${formData[metric.key]}%, rgba(203,213,225,0.9) 100%)`
+                              : `linear-gradient(to right, rgb(52, 152, 219) 0%, rgb(52, 152, 219) ${formData[metric.key]}%, rgba(255,255,255,0.1) ${formData[metric.key]}%, rgba(255,255,255,0.1) 100%)`,
                           }}
                         />
                         <div className="flex justify-between text-xs mt-2" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
@@ -466,7 +509,12 @@ const BelongingCalculator = () => {
                       currentSafety: 52,
                       currentEngagement: 61,
                     })}
-                    className="px-6 py-4 bg-white/10 text-white font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-colors"
+                    className="px-6 py-4 font-semibold rounded-lg border transition-colors"
+                    style={{
+                      backgroundColor: isLight ? '#f8fafc' : 'rgba(255,255,255,0.1)',
+                      color: isLight ? '#334155' : '#f8fafc',
+                      borderColor: isLight ? '#cbd5e1' : 'rgba(255,255,255,0.2)',
+                    }}
                   >
                     Reset
                   </button>

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BlurAnimation, SlideAnimation } from '../components/ScrollAnimations';
+import { useAuth } from '../context/useAuth';
 import { useTheme } from '../context/useTheme';
 
 export default function Login() {
   const { theme, toggle } = useTheme();
+  const { login, isUsingSupabase } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    role: 'teacher',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -18,14 +21,18 @@ export default function Login() {
     setLoading(true);
     setError('');
     
-    // TODO: Implement Supabase authentication
-    console.log('Login attempt:', formData);
-    
-    // Temporary navigation for UI testing
-    setTimeout(() => {
+    try {
+      const sessionUser = await login({
+        email: formData.email.trim(),
+        password: formData.password,
+        role: formData.role,
+      });
       setLoading(false);
-      // navigate('/dashboard/teacher'); // Will enable after Supabase integration
-    }, 1000);
+      navigate(sessionUser.role === 'admin' ? '/dashboard/admin' : '/dashboard/teacher');
+    } catch (err) {
+      setLoading(false);
+      setError(err.message || 'Unable to sign in right now. Please try again.');
+    }
   };
 
   const handleChange = (e) => {
@@ -38,7 +45,7 @@ export default function Login() {
   return (
     <div className={theme === 'light' ? 'light' : ''}>
       <div className="min-h-screen" style={{
-        background: theme === 'dark' ? '#0d1117' : '#ffffff',
+        background: theme === 'dark' ? '#0d1117' : 'linear-gradient(180deg, #e9eff6 0%, #f8fafc 42%)',
         color: theme === 'dark' ? '#f1f5f9' : '#0f172a'
       }}>
         {/* Header */}
@@ -144,12 +151,34 @@ export default function Login() {
                     />
                   </div>
 
+                  {!isUsingSupabase && (
+                    <div className="space-y-2">
+                      <label htmlFor="role" className="block text-sm font-semibold">
+                        Sign in as
+                      </label>
+                      <select
+                        id="role"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                        style={{
+                          backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f8fafc',
+                          borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0',
+                          color: theme === 'dark' ? '#f1f5f9' : '#0f172a'
+                        }}
+                      >
+                        <option value="teacher">Educator</option>
+                      </select>
+                    </div>
+                  )}
+
                   <div className="flex items-center justify-between text-sm">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input type="checkbox" className="rounded" />
                       <span style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Remember me</span>
                     </label>
-                    <Link to="/forgot-password" className="text-brand-blue hover:text-brand-teal transition-colors">
+                    <Link to="/login" className="text-brand-blue hover:text-brand-teal transition-colors">
                       Forgot password?
                     </Link>
                   </div>
@@ -170,7 +199,7 @@ export default function Login() {
                   </div>
                   <div className="relative flex justify-center text-sm">
                     <span className="px-4" style={{ 
-                      backgroundColor: theme === 'dark' ? '#0d1117' : '#ffffff',
+                      backgroundColor: theme === 'dark' ? '#0d1117' : '#f8fafc',
                       color: theme === 'dark' ? '#64748b' : '#94a3b8' 
                     }}>
                       Or continue with

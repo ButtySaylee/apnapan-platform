@@ -10,6 +10,9 @@ export default defineConfig({
           if (id.includes('node_modules/framer-motion')) {
             return 'motion';
           }
+          if (id.includes('node_modules/@supabase')) {
+            return 'supabase';
+          }
           if (id.includes('node_modules/react-router') || id.includes('node_modules/@remix-run')) {
             return 'router';
           }

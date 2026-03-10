@@ -37,7 +37,7 @@ export default function Landing() {
         className="min-h-screen overflow-hidden"
         ref={containerRef}
         style={{
-          background: theme === 'dark' ? '#0d1117' : '#ffffff',
+          background: theme === 'dark' ? '#0d1117' : 'linear-gradient(180deg, #e9eff6 0%, #f8fafc 42%)',
           color: theme === 'dark' ? '#f1f5f9' : '#0f172a'
         }}
       >
@@ -390,6 +390,21 @@ export default function Landing() {
           </div>
         </BlurAnimation>
       </section>
+
+      {/* Admin Access Button */}
+      <div className="fixed bottom-4 left-4 z-40">
+        <Link
+          to="/admin/login"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition-all hover:shadow-md"
+          style={{
+            borderColor: theme === 'dark' ? 'rgba(139,92,246,0.4)' : 'rgba(139,92,246,0.35)',
+            color: theme === 'dark' ? '#c4b5fd' : '#7c3aed',
+            backgroundColor: theme === 'dark' ? 'rgba(139,92,246,0.08)' : 'rgba(139,92,246,0.06)',
+          }}
+        >
+          🛡 Admin Portal
+        </Link>
+      </div>
       </div>
     </>
   );

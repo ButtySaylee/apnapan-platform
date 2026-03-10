@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BlurAnimation, SlideAnimation } from '../components/ScrollAnimations';
+import { useAuth } from '../context/useAuth';
 import { useTheme } from '../context/useTheme';
 
 export default function Signup() {
   const { theme, toggle } = useTheme();
+  const { signup } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
@@ -16,11 +18,15 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [showVerifyPopup, setShowVerifyPopup] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
@@ -35,13 +41,27 @@ export default function Signup() {
       return;
     }
 
-    // TODO: Implement Supabase authentication
-    console.log('Signup attempt:', formData);
-    
-    setTimeout(() => {
+    try {
+      const result = await signup({
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        school: formData.school.trim(),
+        subject: formData.subject.trim(),
+      });
       setLoading(false);
-      // navigate('/dashboard/teacher'); // Will enable after Supabase integration
-    }, 1000);
+      if (result.requiresEmailVerification) {
+        const signupEmail = formData.email.trim();
+        setVerificationEmail(signupEmail);
+        setSuccess('Account created. Please verify your email address before signing in.');
+        setShowVerifyPopup(true);
+        return;
+      }
+      navigate('/dashboard/teacher');
+    } catch (err) {
+      setLoading(false);
+      setError(err.message || 'Unable to create account right now. Please try again.');
+    }
   };
 
   const handleChange = (e) => {
@@ -51,10 +71,15 @@ export default function Signup() {
     }));
   };
 
+  const handleCloseVerifyPopup = () => {
+    setShowVerifyPopup(false);
+    navigate('/login');
+  };
+
   return (
     <div className={theme === 'light' ? 'light' : ''}>
       <div className="min-h-screen" style={{
-        background: theme === 'dark' ? '#0d1117' : '#ffffff',
+        background: theme === 'dark' ? '#0d1117' : 'linear-gradient(180deg, #e9eff6 0%, #f8fafc 42%)',
         color: theme === 'dark' ? '#f1f5f9' : '#0f172a'
       }}>
         {/* Header */}
@@ -113,6 +138,12 @@ export default function Signup() {
                 {error && (
                   <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-500 text-sm">
                     {error}
+                  </div>
+                )}
+
+                {success && (
+                  <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30 text-green-500 text-sm">
+                    {success}
                   </div>
                 )}
 
@@ -297,6 +328,38 @@ export default function Signup() {
           </div>
         </main>
       </div>
+
+      {showVerifyPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0"
+            style={{ backgroundColor: theme === 'dark' ? 'rgba(0,0,0,0.72)' : 'rgba(15,23,42,0.45)' }}
+            onClick={handleCloseVerifyPopup}
+          />
+          <div className="relative z-10 w-full max-w-md rounded-xl border p-6 space-y-4" style={{
+            backgroundColor: theme === 'dark' ? '#161b22' : '#ffffff',
+            borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+            boxShadow: theme === 'dark' ? '0 20px 45px rgba(0,0,0,0.4)' : '0 20px 45px rgba(15,23,42,0.18)',
+          }}>
+            <h3 className="text-xl font-bold">Verify Your Email</h3>
+            <p className="text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
+              Your account is created. Please log in to the email address you used to sign up and click the verification link before signing in.
+            </p>
+            <p className="text-sm font-semibold" style={{ color: theme === 'dark' ? '#93c5fd' : '#1d4ed8' }}>
+              {verificationEmail}
+            </p>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={handleCloseVerifyPopup}
+                className="btn btn-primary"
+              >
+                Go To Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

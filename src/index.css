@@ -11,7 +11,7 @@ body {
 }
 
 .light body {
-  @apply bg-white text-slate-900;
+  @apply bg-slate-100 text-slate-900;
 }
 
 .container-wide {
@@ -20,6 +20,17 @@ body {
 
 a {
   @apply no-underline;
+}
+
+/* Keep native dropdown menu items readable in both themes. */
+select option {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+.light select option {
+  background-color: #ffffff;
+  color: #0f172a;
 }
 
 .btn {
@@ -35,7 +46,7 @@ a {
 }
 
 .light .card-surface {
-  @apply bg-white border-slate-200 shadow-sm;
+  @apply bg-white border-slate-300 shadow-md;
 }
 
 .glass {
@@ -43,7 +54,11 @@ a {
 }
 
 .light .glass {
-  @apply bg-slate-50 border-slate-200 shadow-sm;
+  @apply bg-slate-50 border-slate-300 shadow-sm;
+}
+
+.light .btn {
+  @apply shadow;
 }
 
 .pill {
