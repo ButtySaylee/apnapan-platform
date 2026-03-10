@@ -92,44 +92,50 @@ export default function Community() {
   return (
     <div className={theme === 'light' ? 'light' : ''}>
       <div className="min-h-screen">
-        <header className="sticky top-0 z-20 bg-slate-900/80 light:bg-white/80 backdrop-blur border-b border-white/10 light:border-slate-200">
+        <header className="sticky top-0 z-20 border-b" style={{
+          backgroundColor: theme === 'dark' ? 'rgba(10,14,20,0.97)' : 'rgba(255,255,255,0.97)',
+          borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb',
+          backdropFilter: 'blur(8px)'
+        }}>
           <div className="container-wide flex items-center gap-4 py-4">
             <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-12 w-12 rounded-full shadow-glow" loading="lazy" />
+              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-10 w-10 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1 shadow-lg" loading="lazy" />
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-slate-900">Project Apnapan</h1>
-                <p className="text-xs" style={{ color: theme === 'dark' ? '#cbd5e1' : '#64748b' }}>Community Hub</p>
+                <h1 className="text-lg font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Project Apnapan</h1>
+                <p className="text-xs" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>Community Hub</p>
               </div>
             </Link>
             <div className="flex-1" />
-            <Link to="/schools" className="text-sm font-semibold" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }} onMouseEnter={(e) => e.target.style.color = theme === 'dark' ? '#ffffff' : '#0f172a'} onMouseLeave={(e) => e.target.style.color = theme === 'dark' ? '#cbd5e1' : '#475569'}>
+            <Link to="/schools" className="text-sm font-medium transition-colors" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }} onMouseEnter={(e) => e.target.style.color = theme === 'dark' ? '#f1f5f9' : '#0f172a'} onMouseLeave={(e) => e.target.style.color = theme === 'dark' ? '#94a3b8' : '#64748b'}>
               School Partnership
             </Link>
             <button
               onClick={toggle}
-              className="theme-toggle"
+              className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all"
+              style={{
+                backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#e2e8f0',
+                color: theme === 'dark' ? '#cbd5e1' : '#475569'
+              }}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               aria-pressed={theme === 'dark'}
-              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
-              <span className="text-xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+              {theme === 'dark' ? '☀ Light' : '☽ Dark'}
             </button>
           </div>
         </header>
 
-        <main className="container-wide space-y-16 py-10">
+        <main className="container-wide space-y-20 py-16">
           {/* Community Hero */}
           <BlurAnimation delay={0} duration={0.8}>
             <section className="section-shell card-surface overflow-hidden">
-              <div className="section-bg parallax-dots" aria-hidden />
-              <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/20 via-brand-purple/15 to-brand-teal/20 blur-3xl -z-10" aria-hidden />
               <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-center">
                 <SlideAnimation direction="left" delay={0.1}>
                   <div className="space-y-5">
                     <div className="pill bg-white/10 light:bg-slate-200 text-white light:text-slate-800">Community · Stories · Impact</div>
                     <h2 className="headline">Voices and stories from educators and students transforming schools.</h2>
                     <p className="subhead">Explore the community hub: share your story, learn from others, and co-create belonging-centered solutions.</p>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-4">
                       <button className="btn btn-primary">Share Your Story</button>
                       <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">Browse Resources</button>
                     </div>
@@ -161,8 +167,7 @@ export default function Community() {
 
           {/* Schools Partnership Teaser */}
           <ScaleAnimation delay={0} scale={0.95} duration={0.7}>
-            <section className="card-surface p-8 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/10 via-brand-teal/5 to-transparent -z-10" aria-hidden />
+            <section className="card-surface p-6 sm:p-8 md:p-10 overflow-hidden relative">
               <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] items-center">
                 <SlideAnimation direction="left" delay={0.1}>
                   <div className="space-y-4">
@@ -171,7 +176,7 @@ export default function Community() {
                     <p className="leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
                       Two schools, same test scores. One measures belonging, voice, and authenticity. Discover what happens when you measure what actually matters.
                     </p>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-4">
                       <Link to="/schools" className="btn btn-primary">Explore School Partnership</Link>
                       <button className="btn bg-white/10 light:bg-slate-100 text-white light:text-slate-900 border border-white/20 light:border-slate-200">See the Data</button>
                     </div>
@@ -205,7 +210,7 @@ export default function Community() {
 
           {/* Narrative Timeline */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10">
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <h2 className="section-title mb-0">Apnapan Journey</h2>
                 <div className="badge-tile">Scroll the milestones →</div>
@@ -233,7 +238,7 @@ export default function Community() {
 
           {/* Student Stories */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10">
               <h2 className="section-title">Voices from the Classroom</h2>
               <StaggerAnimation delay={0.2} staggerDelay={0.1}>
                 <div className="grid-auto">
@@ -263,7 +268,7 @@ export default function Community() {
           {/* Data Pulse & Resources */}
           <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <BlurAnimation delay={0} duration={0.8}>
-              <div className="card-surface p-8 space-y-4">
+              <div className="card-surface p-6 sm:p-8 md:p-10 space-y-6">
                 <h2 className="section-title">Data Pulse</h2>
                 <StaggerAnimation delay={0.2} staggerDelay={0.1}>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -281,7 +286,7 @@ export default function Community() {
               </div>
             </BlurAnimation>
             <BlurAnimation delay={0.1} duration={0.8}>
-              <div className="card-surface p-8 space-y-4">
+              <div className="card-surface p-6 sm:p-8 md:p-10 space-y-6">
                 <h2 className="section-title">Resources</h2>
                 <StaggerAnimation delay={0.3} staggerDelay={0.1}>
                   <div className="space-y-3">
@@ -301,7 +306,7 @@ export default function Community() {
 
           {/* Team */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10">
               <h2 className="section-title">Apnapan Team</h2>
               <StaggerAnimation delay={0.2} staggerDelay={0.15}>
                 <div className="grid-auto">
@@ -322,7 +327,7 @@ export default function Community() {
 
           {/* Partners */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10">
               <h2 className="section-title">Partner Organizations</h2>
               <StaggerAnimation delay={0.2} staggerDelay={0.15}>
                 <div className="grid-auto">
@@ -344,7 +349,7 @@ export default function Community() {
 
           {/* Interaction CTA */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8 text-center space-y-4">
+            <section className="card-surface p-6 sm:p-8 md:p-10 text-center space-y-6">
               <h2 className="section-title">Let's build humane schools together</h2>
               <p className="subhead">Co-design a storytelling pilot, invite a workshop, or explore our research in your context.</p>
               <StaggerAnimation delay={0.3} staggerDelay={0.1} direction="up">
@@ -358,8 +363,11 @@ export default function Community() {
           </BlurAnimation>
         </main>
 
-        <footer className="mt-16 py-10 bg-slate-950/70 light:bg-white/80 border-t border-white/10 light:border-slate-200">
-          <div className="container-wide text-center text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
+        <footer className="mt-16 py-8 border-t" style={{
+          backgroundColor: theme === 'dark' ? '#080c12' : '#f8fafc',
+          borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb'
+        }}>
+          <div className="container-wide text-center text-sm" style={{ color: theme === 'dark' ? '#475569' : '#94a3b8' }}>
             © 2026 Project Apnapan | Designed with empathy and innovation
           </div>
         </footer>

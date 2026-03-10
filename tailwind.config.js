@@ -11,9 +11,9 @@ export default {
       },
       colors: {
         brand: {
-          teal: '#1abc9c',
-          blue: '#3498db',
-          purple: '#9b59b6'
+          teal: '#0d7377',
+          blue: '#1a3558',
+          purple: '#4a6fa5'
         }
       }
     }

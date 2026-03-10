@@ -187,7 +187,7 @@ export default function SchoolPartnership() {
     const metric = schoolMetrics[activeMetric];
 
     return (
-      <div className="space-y-8">
+      <div className="space-y-10">
         <div className="flex flex-wrap gap-2">
           {schoolMetrics.map((m, idx) => (
             <button
@@ -243,7 +243,7 @@ export default function SchoolPartnership() {
   // Scrollable carousel for implementation phases
   const ImplementationTimeline = () => {
     return (
-      <div className="space-y-8">
+      <div className="space-y-10">
         <div className="space-y-4">
           <h2 className="section-title">Implementation Timeline</h2>
           <p className="subhead">12 months from listening to measurable transformation</p>
@@ -360,45 +360,52 @@ export default function SchoolPartnership() {
     <div className={theme === 'light' ? 'light' : ''}>
       <div className="min-h-screen">
         {/* Header */}
-        <header className="sticky top-0 z-20 bg-slate-900/80 light:bg-white/80 backdrop-blur border-b border-white/10 light:border-slate-200">
+        <header className="sticky top-0 z-20 border-b" style={{
+          backgroundColor: theme === 'dark' ? 'rgba(10,14,20,0.97)' : 'rgba(255,255,255,0.97)',
+          borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb',
+          backdropFilter: 'blur(8px)'
+        }}>
           <div className="container-wide flex items-center gap-4 py-4">
             <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-12 w-12 rounded-full shadow-glow" loading="lazy" />
+              <img src="/images/logo.png" alt="Project Apnapan Logo" className="h-10 w-10 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1 shadow-lg" loading="lazy" />
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-slate-900">Project Apnapan</h1>
-                <p className="text-xs" style={{ color: theme === 'dark' ? '#cbd5e1' : '#64748b' }}>School Partnership</p>
+                <h1 className="text-lg font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Project Apnapan</h1>
+                <p className="text-xs" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>School Partnership</p>
               </div>
             </Link>
             <div className="flex-1" />
-            <Link to="/community" className="text-sm font-semibold text-muted hover:text-white light:hover:text-slate-900 transition-colors mr-4">
+            <Link to="/community" className="text-sm font-medium mr-4 transition-colors" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
               Community Hub
             </Link>
             <button
               onClick={toggle}
-              className="theme-toggle"
+              className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all"
+              style={{
+                backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#e2e8f0',
+                color: theme === 'dark' ? '#cbd5e1' : '#475569'
+              }}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               aria-pressed={theme === 'dark'}
             >
-              <span className="text-xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+              {theme === 'dark' ? '☀ Light' : '☽ Dark'}
             </button>
           </div>
         </header>
 
-        <main className="container-wide space-y-16 py-10">
+        <main className="container-wide space-y-20 py-16">
           {/* Hero Section */}
           <BlurAnimation delay={0} duration={0.9}>
-            <section className="section-shell card-surface overflow-hidden min-h-[60vh] flex items-center">
-              <div className="section-bg parallax-dots" aria-hidden />
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/20 via-brand-purple/15 to-brand-teal/20 blur-3xl -z-10" aria-hidden />
+            <section className="section-shell card-surface overflow-hidden min-h-[50vh] flex items-center">
               <div className="space-y-8">
                 <SlideAnimation direction="left" delay={0.1}>
                   <div className="space-y-4">
                     <div className="pill bg-white/10 light:bg-slate-200 text-white light:text-slate-800 w-fit">
                       Data Storytelling · School Transformation · Futures in Education
                     </div>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+                    <h1 className="text-4xl sm:text-5xl font-bold leading-tight tracking-tight" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
                       What if schools measured
-                      <span className="block bg-gradient-to-r from-brand-blue via-brand-teal to-brand-purple bg-clip-text text-transparent">
+                      <span className="block" style={{ color: theme === 'dark' ? '#7eb8d4' : '#1a3558' }}>
                         what actually matters?
                       </span>
                     </h1>
@@ -447,7 +454,7 @@ export default function SchoolPartnership() {
 
           {/* The Core Question */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8 space-y-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
               <div className="space-y-4">
                 <h2 className="section-title">Two Schools. Same Benchmark. Different Reality.</h2>
                 <p className="subhead">Let's compare what happens when schools measure belonging, voice, and authentic self-expression alongside academic achievement.</p>
@@ -490,13 +497,13 @@ export default function SchoolPartnership() {
           </StaggerAnimation>
 
           {/* Implementation Timeline */}
-          <section className="card-surface p-8 space-y-8">
+          <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
             <ImplementationTimeline />
           </section>
 
           {/* Real Outcomes */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8 space-y-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
               <div className="space-y-4">
                 <h2 className="section-title">What Changed in Real Schools</h2>
                 <p className="subhead">Academic metrics + belonging metrics = sustainable transformation</p>
@@ -515,7 +522,7 @@ export default function SchoolPartnership() {
 
           {/* Student Voices */}
           <BlurAnimation delay={0.1} duration={0.8}>
-            <section className="card-surface p-8 space-y-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
               <div className="space-y-4">
                 <h2 className="section-title">Hear from Students</h2>
                 <p className="subhead">Real stories of transformation—from students themselves</p>
@@ -558,7 +565,7 @@ export default function SchoolPartnership() {
 
           {/* The Partnership Process */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8 space-y-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
               <div className="space-y-4">
                 <h2 className="section-title">How Partnership Works</h2>
                 <p className="subhead">We don't come with pre-built solutions. We co-design with you.</p>
@@ -631,7 +638,7 @@ export default function SchoolPartnership() {
 
           {/* Who Should Apply */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8 space-y-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
               <div className="space-y-4">
                 <h2 className="section-title">The Right Fit</h2>
                 <p className="subhead">We're looking for schools ready to measure what matters—and willing to change based on what they find.</p>
@@ -677,7 +684,7 @@ export default function SchoolPartnership() {
 
           {/* Call to Action */}
           <ScaleAnimation delay={0} scale={0.95}>
-            <section className="card-surface p-10 text-center space-y-6 bg-gradient-to-br from-brand-blue/10 via-brand-purple/10 to-brand-teal/10 border border-brand-blue/30">
+            <section className="card-surface p-6 sm:p-10 md:p-12 text-center space-y-8 border border-brand-blue/20">
               <h2 className="section-title">Ready to Join the Movement?</h2>
               <p className="subhead max-w-2xl mx-auto">
                 The future of education isn't just about test scores. It's about belonging, voice, and every student feeling like they matter. Let's build that together.
@@ -694,7 +701,7 @@ export default function SchoolPartnership() {
 
           {/* FAQ */}
           <BlurAnimation delay={0} duration={0.8}>
-            <section className="card-surface p-8 space-y-8">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-10">
               <h2 className="section-title">Questions?</h2>
               <StaggerAnimation delay={0.2} staggerDelay={0.15} direction="up">
                 <div className="grid gap-6 md:grid-cols-2">
@@ -730,7 +737,7 @@ export default function SchoolPartnership() {
 
           {/* Contact Section */}
           <DropAnimation delay={0} distance={40}>
-            <section className="card-surface p-8 space-y-4 text-center">
+            <section className="card-surface p-6 sm:p-8 md:p-10 space-y-6 text-center">
               <h3 className="text-xl font-bold">Let's Talk</h3>
               <p className="text-muted">
                 Questions about partnership? Interested in becoming a pilot school?
@@ -744,8 +751,11 @@ export default function SchoolPartnership() {
         </main>
 
         {/* Footer */}
-        <footer className="mt-16 py-10 bg-slate-950/70 light:bg-white/80 border-t border-white/10 light:border-slate-200">
-          <div className="container-wide text-center text-sm text-muted space-y-4">
+        <footer className="mt-16 py-8 border-t" style={{
+          backgroundColor: theme === 'dark' ? '#080c12' : '#f8fafc',
+          borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e5e7eb'
+        }}>
+          <div className="container-wide text-center text-sm space-y-4" style={{ color: theme === 'dark' ? '#475569' : '#94a3b8' }}>
             <p>© 2026 Project Apnapan | Measuring What Matters in Education</p>
             <div className="flex flex-wrap justify-center gap-6 text-xs">
               <Link to="/" className="hover:text-white light:hover:text-slate-900 transition-colors">

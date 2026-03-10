@@ -57,74 +57,59 @@ export default function Landing() {
 
   return (
     <>
-      <div 
-        className="min-h-screen overflow-hidden" 
+      <div
+        className="min-h-screen overflow-hidden"
         ref={containerRef}
         style={{
-          background: theme === 'dark' 
-            ? 'linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a)'
-            : 'linear-gradient(to bottom right, #f8fafc, #e2e8f0, #cbd5e1)',
+          background: theme === 'dark' ? '#0d1117' : '#ffffff',
           color: theme === 'dark' ? '#f1f5f9' : '#0f172a'
         }}
       >
+        {/* Top-left logo header */}
+        <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 flex items-center" style={{
+          backgroundColor: theme === 'dark' ? 'rgba(13,17,23,0.97)' : 'rgba(255,255,255,0.97)',
+          borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+          backdropFilter: 'blur(8px)'
+        }}>
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <img
+              src="/images/logo.png"
+              alt="Project Apnapan"
+              className="h-9 w-9 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1"
+            />
+            <span className="text-base font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
+              Project Apnapan
+            </span>
+          </Link>
+        </header>
+
         {/* Theme Toggle */}
         <button
           onClick={toggle}
-          className="fixed top-6 right-6 z-50 p-2 rounded-full border transition-all hover:scale-110"
+          className="fixed top-4 right-6 z-50 px-3 py-1.5 rounded-lg border text-sm font-medium transition-all"
           style={{
-            backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(15, 23, 42, 0.1)',
-            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(15, 23, 42, 0.2)',
+            backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.06)',
+            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.12)',
+            color: theme === 'dark' ? '#cbd5e1' : '#334155'
           }}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           aria-pressed={theme === 'dark'}
           title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-          <span className="text-2xl">{theme === 'dark' ? '☀️' : '🌙'}</span>
+          {theme === 'dark' ? '☀ Light' : '☽ Dark'}
         </button>
 
-        {/* Animated background elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-brand-blue/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-brand-purple/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-brand-teal/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-      </div>
 
-      {/* Grid background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          backgroundImage: `
-            linear-gradient(0deg, transparent 24%, rgba(52, 152, 219, .1) 25%, rgba(52, 152, 219, .1) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, .1) 75%, rgba(52, 152, 219, .1) 76%, transparent 77%, transparent),
-            linear-gradient(90deg, transparent 24%, rgba(52, 152, 219, .1) 25%, rgba(52, 152, 219, .1) 26%, transparent 27%, transparent 74%, rgba(52, 152, 219, .1) 75%, rgba(52, 152, 219, .1) 76%, transparent 77%, transparent)
-          `,
-          backgroundSize: '60px 60px',
-        }}
-      ></div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20 md:py-28">
         {/* Main content */}
-        <div className="max-w-5xl mx-auto text-center space-y-8">
-          {/* Logo area with animation */}
-          <DropAnimation delay={0} distance={60}>
-            <div className="mb-8 animate-fade-in-up">
-              <div className="w-32 h-32 mx-auto mb-6 relative flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-r from-brand-blue to-brand-purple rounded-full blur-lg opacity-75 animate-pulse"></div>
-                <img
-                  src="/images/logo.png"
-                  alt="Project Apnapan"
-                  className="relative w-full h-full rounded-full shadow-glow object-contain border-4 border-white/20 p-2"
-                />
-              </div>
-              <h1 className="text-sm font-bold uppercase tracking-[0.3em] text-brand-blue mb-2">Project Apnapan</h1>
-            </div>
-          </DropAnimation>
+        <div className="max-w-5xl mx-auto text-center space-y-10">
 
-          {/* Main headline with gradient and animation */}
-          <DropAnimation delay={0.2} distance={50}>
-            <div className="space-y-4 animate-fade-in-up animation-delay-200">
-              <h2 className="text-5xl md:text-7xl font-black leading-tight">
-                <span className="block mb-3" style={{ color: theme === 'dark' ? '#ffffff' : '#0f172a' }}>Building schools where</span>
-                <span className="bg-gradient-to-r from-brand-blue via-brand-purple to-brand-teal bg-clip-text text-transparent animate-gradient">
+          {/* Main headline */}
+          <DropAnimation delay={0} distance={50}>
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight">
+                <span className="block mb-2" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Building schools where</span>
+                <span style={{ color: theme === 'dark' ? '#7eb8d4' : '#1a3558' }}>
                   every child is seen, heard, and empowered.
                 </span>
               </h2>
@@ -140,56 +125,44 @@ export default function Landing() {
             </div>
           </BlurAnimation>
 
-          {/* CTA Buttons with stagger animation */}
-          <StaggerAnimation delay={0.6} staggerDelay={0.1} direction="up">
-            <div className="animate-fade-in-up animation-delay-600 flex flex-wrap gap-4 justify-center pt-8">
+          {/* CTA Buttons */}
+          <StaggerAnimation delay={0.3} staggerDelay={0.1} direction="up">
+            <div className="flex flex-wrap gap-4 justify-center pt-8">
               <Link
                 to="/community"
-                className="group relative px-8 py-4 text-lg font-semibold rounded-full overflow-hidden transition-all duration-300"
+                className="px-6 py-3 rounded-lg bg-brand-blue text-white text-base font-semibold hover:opacity-90 transition-all shadow-sm flex items-center gap-2"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand-blue to-brand-purple opacity-100 group-hover:opacity-110 transition-opacity"></div>
-                <div className="relative text-white flex items-center gap-2">
-                  Explore Community
-                  <span className="inline-block transform group-hover:translate-x-1 transition-transform">→</span>
-                </div>
+                Explore Community <span>→</span>
               </Link>
-
               <Link
                 to="/calculator"
-                className="group relative px-8 py-4 text-lg font-semibold rounded-full overflow-hidden transition-all duration-300"
+                className="px-6 py-3 rounded-lg text-base font-semibold transition-all border flex items-center gap-2"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9',
+                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+                  color: theme === 'dark' ? '#f1f5f9' : '#1a3558'
+                }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand-teal to-brand-blue opacity-100 group-hover:opacity-110 transition-opacity"></div>
-                <div className="relative text-white flex items-center gap-2">
-                  Try Our Calculator
-                  <span className="inline-block transform group-hover:translate-x-1 transition-transform">→</span>
-                </div>
+                Try Calculator <span>→</span>
               </Link>
-
               <Link
                 to="/schools"
-                className="group relative px-8 py-4 text-lg font-semibold rounded-full overflow-hidden transition-all duration-300"
+                className="px-6 py-3 rounded-lg text-base font-semibold transition-all border flex items-center gap-2"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9',
+                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
+                  color: theme === 'dark' ? '#f1f5f9' : '#1a3558'
+                }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand-blue to-brand-teal opacity-100 group-hover:opacity-110 transition-opacity"></div>
-                <div className="relative text-white flex items-center gap-2">
-                  For School Leaders
-                  <span className="inline-block transform group-hover:translate-x-1 transition-transform">→</span>
-                </div>
+                For School Leaders <span>→</span>
               </Link>
-
-              <button className="group relative px-8 py-4 text-lg font-semibold rounded-full overflow-hidden transition-all duration-300">
-                <div className="absolute inset-0 bg-gradient-to-r from-brand-purple to-brand-teal opacity-100 group-hover:opacity-110 transition-opacity"></div>
-                <div className="relative text-white flex items-center gap-2">
-                  Get Involved
-                  <span className="inline-block transform group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </button>
             </div>
           </StaggerAnimation>
 
           {/* Stats section with scroll indicator */}
-          <div className="animate-fade-in-up animation-delay-800 pt-16">
-            <p className="text-sm mb-8" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Impact across schools:</p>
-            <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto mb-16">
+          <div className="animate-fade-in-up animation-delay-800 pt-20">
+            <p className="text-sm mb-10" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Impact across schools:</p>
+            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mb-20">
               <div className="group">
                 <div className="text-3xl md:text-4xl font-bold text-brand-blue group-hover:text-brand-purple transition-colors">78%</div>
                 <p className="text-sm mt-2" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Students feel seen</p>
@@ -217,9 +190,8 @@ export default function Landing() {
 
       {/* Scroll content - The mission & vision section */}
       <section className="relative z-10 min-h-screen flex items-center px-4 py-20" style={{
-        background: theme === 'dark' 
-          ? 'linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a)'
-          : 'linear-gradient(to bottom right, #f8fafc, #e2e8f0, #cbd5e1)'
+        background: theme === 'dark' ? '#111827' : '#f8fafc',
+        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
       }}>
         <div className="max-w-5xl mx-auto w-full">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -227,11 +199,11 @@ export default function Landing() {
             <SlideAnimation direction="left" delay={0}>
               <div className="space-y-6" data-mouse-track>
                 <div className="inline-block">
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-brand-blue border border-brand-blue/30" style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(226, 232, 240, 1)'
+                  <span className="px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider text-brand-blue border border-brand-blue/30" style={{
+                    backgroundColor: theme === 'dark' ? 'rgba(26,53,88,0.3)' : 'rgba(226, 232, 240, 1)'
                   }}>Why we exist</span>
                 </div>
-                <h3 className="text-4xl md:text-5xl font-bold leading-tight" style={{ color: theme === 'dark' ? '#ffffff' : '#0f172a' }}>
+                <h3 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
                   Think back to your school days
                 </h3>
                 <p className="text-lg leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
@@ -292,12 +264,15 @@ export default function Landing() {
       </section>
 
       {/* Our approach section */}
-      <section className="relative z-10 min-h-screen flex items-center px-4 py-20">
+      <section className="relative z-10 flex items-center px-4 py-24" style={{
+        backgroundColor: theme === 'dark' ? '#0d1117' : '#ffffff',
+        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
+      }}>
         <div className="max-w-5xl mx-auto w-full">
           <BlurAnimation delay={0} duration={0.8}>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Our Four-Pillar Approach</h2>
-              <p className="text-lg font-medium" style={{ color: theme === 'dark' ? '#f1f5f9' : '#1e293b' }}>Creating inclusive environments through research, co-design, and adaptive implementation</p>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Our Four-Pillar Approach</h2>
+              <p className="text-base" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Creating inclusive environments through research, co-design, and adaptive implementation</p>
             </div>
           </BlurAnimation>
 
@@ -327,13 +302,17 @@ export default function Landing() {
               ].map((pillar, idx) => (
                 <div
                   key={idx}
-                  className="group relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-white/5 to-white/0 border border-white/10 hover:border-brand-blue/50 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-blue/20"
+                  className="rounded-xl p-7 border transition-all duration-200 hover:-translate-y-0.5"
+                  style={{
+                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#ffffff',
+                    borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0',
+                    boxShadow: theme === 'dark' ? 'none' : '0 1px 4px rgba(0,0,0,0.06)'
+                  }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/0 to-brand-purple/0 group-hover:from-brand-blue/10 group-hover:to-brand-purple/10 transition-all duration-500"></div>
-                  <div className="relative z-10 space-y-4">
-                    <div className="text-4xl">{pillar.icon}</div>
-                    <h3 className="text-2xl font-bold text-white group-hover:text-brand-blue transition-colors">{pillar.title}</h3>
-                    <p className="leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{pillar.desc}</p>
+                  <div className="space-y-3">
+                    <div className="text-3xl">{pillar.icon}</div>
+                    <h3 className="text-xl font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>{pillar.title}</h3>
+                    <p className="leading-relaxed text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#475569' }}>{pillar.desc}</p>
                   </div>
                 </div>
               ))}
@@ -343,12 +322,15 @@ export default function Landing() {
       </section>
 
       {/* Solutions section */}
-      <section className="relative z-10 min-h-screen flex items-center px-4 py-20">
+      <section className="relative z-10 flex items-center px-4 py-24" style={{
+        backgroundColor: theme === 'dark' ? '#111827' : '#f8fafc',
+        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
+      }}>
         <div className="max-w-5xl mx-auto w-full">
           <BlurAnimation delay={0} duration={0.8}>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Our Solutions</h2>
-              <p className="text-xl" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Comprehensive, evidence-based tools and frameworks</p>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Our Solutions</h2>
+              <p className="text-base" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Comprehensive, evidence-based tools and frameworks</p>
             </div>
           </BlurAnimation>
 
@@ -364,14 +346,17 @@ export default function Landing() {
               ].map((solution, idx) => (
                 <div
                   key={idx}
-                  className="group flex items-center gap-4 p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-teal/50 transition-all duration-300"
+                  className="flex items-center gap-4 p-5 rounded-lg border transition-all duration-200"
+                  style={{
+                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#ffffff',
+                    borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0',
+                    boxShadow: theme === 'dark' ? 'none' : '0 1px 4px rgba(0,0,0,0.05)'
+                  }}
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-brand-blue to-brand-purple flex items-center justify-center text-white font-bold">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-md bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-sm border border-brand-blue/20">
                     {idx + 1}
                   </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-white group-hover:text-brand-teal transition-colors">{solution}</p>
-                  </div>
+                  <p className="font-medium text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>{solution}</p>
                 </div>
               ))}
             </div>
@@ -380,34 +365,40 @@ export default function Landing() {
       </section>
 
       {/* CTA section */}
-      <section className="relative z-10 min-h-screen flex items-center justify-center px-4 py-20">
+      <section className="relative z-10 flex items-center justify-center px-4 py-28" style={{
+        backgroundColor: theme === 'dark' ? '#111827' : '#f0f4f8',
+        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
+      }}>
         <BlurAnimation delay={0} duration={1}>
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+          <div className="max-w-2xl mx-auto text-center space-y-6">
+            <h2 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
               Ready to transform your school?
             </h2>
-            <p className="text-xl" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
+            <p className="text-lg leading-relaxed" style={{ color: theme === 'dark' ? '#94a3b8' : '#475569' }}>
               Join educators, schools, and communities building a future where every child feels they belong.
             </p>
 
-            <StaggerAnimation delay={0.3} staggerDelay={0.15} direction="up">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-                <Link
-                  to="/community"
-                  className="group relative px-8 py-4 text-lg font-semibold rounded-full overflow-hidden transition-all duration-300 inline-block"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-brand-blue to-brand-purple"></div>
-                  <div className="relative text-white">Join the Community</div>
-                </Link>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+              <Link
+                to="/community"
+                className="px-6 py-3 rounded-lg bg-brand-blue text-white font-semibold hover:opacity-90 transition-all shadow-sm"
+              >
+                Join the Community
+              </Link>
+              <a
+                href="mailto:projectapnapan@gmail.com"
+                className="px-6 py-3 rounded-lg font-semibold border transition-all"
+                style={{
+                  backgroundColor: 'transparent',
+                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.2)' : '#cbd5e1',
+                  color: theme === 'dark' ? '#f1f5f9' : '#334155'
+                }}
+              >
+                Contact Us
+              </a>
+            </div>
 
-                <button className="group relative px-8 py-4 text-lg font-semibold rounded-full overflow-hidden transition-all duration-300 border-2 border-white hover:border-brand-blue inline-block">
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors"></div>
-                  <div className="relative text-white">Contact Us</div>
-                </button>
-              </div>
-            </StaggerAnimation>
-
-            <p className="text-sm pt-8" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>projectapnapan@gmail.com</p>
+            <p className="text-sm pt-4" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>projectapnapan@gmail.com</p>
           </div>
         </BlurAnimation>
       </section>

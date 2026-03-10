@@ -7,11 +7,11 @@
 }
 
 body {
-  @apply min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-sans antialiased;
+  @apply min-h-screen bg-slate-950 text-slate-100 font-sans antialiased;
 }
 
 .light body {
-  @apply bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 text-slate-900;
+  @apply bg-white text-slate-900;
 }
 
 .container-wide {
@@ -19,31 +19,35 @@ body {
 }
 
 a {
-  @apply underline decoration-dashed decoration-brand-blue/60 hover:decoration-brand-purple;
+  @apply no-underline;
 }
 
 .btn {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-semibold transition-transform duration-150 shadow-lg;
+  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 shadow-sm;
 }
 
 .btn-primary {
-  @apply bg-gradient-to-r from-brand-blue to-brand-purple text-white hover:scale-[1.02];
+  @apply bg-brand-blue text-white hover:opacity-90 hover:shadow-md;
 }
 
 .card-surface {
-  @apply bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl shadow-2xl;
+  @apply bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-sm;
 }
 
 .light .card-surface {
-  @apply bg-white border-slate-200;
+  @apply bg-white border-slate-200 shadow-sm;
 }
 
 .glass {
-  @apply bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl rounded-3xl;
+  @apply bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] rounded-xl shadow-sm;
+}
+
+.light .glass {
+  @apply bg-slate-50 border-slate-200 shadow-sm;
 }
 
 .pill {
-  @apply px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase;
+  @apply px-3 py-1 rounded-md text-xs font-semibold tracking-wide uppercase;
 }
 
 .grid-auto {
@@ -51,7 +55,7 @@ a {
 }
 
 .section-title {
-  @apply text-3xl sm:text-4xl font-extrabold text-center bg-gradient-to-r from-brand-blue via-brand-purple to-brand-teal bg-clip-text text-transparent mb-8;
+  @apply text-2xl sm:text-3xl font-bold text-center mb-8;
 }
 
 .text-muted {
@@ -83,7 +87,7 @@ a {
 }
 
 .badge-tile {
-  @apply inline-flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold bg-white/10 border border-white/10;
+  @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.1)];
 }
 
 .light .badge-tile {
@@ -91,7 +95,7 @@ a {
 }
 
 .section-shell {
-  @apply relative overflow-hidden rounded-3xl p-8 sm:p-10;
+  @apply relative overflow-hidden rounded-3xl p-6 sm:p-8 md:p-10;
 }
 
 .section-bg {
@@ -99,20 +103,20 @@ a {
 }
 
 .parallax-dots {
-  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
   background-size: 28px 28px;
 }
 
 .tilt-card {
-  @apply transition-transform duration-200 hover:-translate-y-1 hover:rotate-1;
+  @apply transition-transform duration-200 hover:-translate-y-0.5;
 }
 
 .shadow-glow {
-  box-shadow: 0 10px 40px rgba(52, 152, 219, 0.35);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .light .shadow-glow {
-  box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Advanced animations for landing page */
@@ -351,7 +355,7 @@ a {
 
 .data-card::before {
   content: '';
-  @apply absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity duration-300;
+  @apply absolute inset-0 bg-gradient-to-br from-[rgba(255,255,255,0.1)] to-transparent opacity-0 transition-opacity duration-300;
   pointer-events: none;
 }
 
@@ -587,7 +591,7 @@ a {
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 30px rgba(52, 152, 219, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .hover-scale-sm {
