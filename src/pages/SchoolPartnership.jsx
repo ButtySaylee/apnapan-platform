@@ -91,7 +91,7 @@ const studentVoices = [
     after: 'After: "My teachers ask about my day. I actually want to come to class."',
     grade: 'Grade 9',
     school: 'First Implementation School',
-    impact: 'Engagement +42%',
+    impact: 'Students re-engage in classroom routines',
     type: 'belonging',
   },
   {
@@ -99,7 +99,7 @@ const studentVoices = [
     after: 'After: "I ask tons of questions now. Everyone else does too. It\'s normal here."',
     grade: 'Grade 7',
     school: 'First Implementation School',
-    impact: 'Voice Score +58%',
+    impact: 'Question-asking and participation become normalized',
     type: 'voice',
   },
   {
@@ -107,7 +107,7 @@ const studentVoices = [
     after: 'After: "I can just be me. No one pretends to be different here."',
     grade: 'Grade 10',
     school: 'First Implementation School',
-    impact: 'Authenticity +65%',
+    impact: 'Students report feeling safer being themselves',
     type: 'authentic',
   },
 ];
@@ -118,13 +118,9 @@ const successStories = [
     location: 'Colorado, USA',
     studentCount: 1200,
     timeframe: '6 months',
-    headline: 'From 41% to 88% belonging—while test scores stayed strong',
-    result: 'Implemented weekly "belonging circles" where students share challenges. School redesigned lunch seating patterns to mix friend groups, added peer mentoring. Result: Attendance spike, 34% fewer discipline referrals, mental health visits dropped.',
-    metrics: [
-      { label: 'Belonging increase', value: '+47%' },
-      { label: 'Attendance rate', value: '+12%' },
-      { label: 'Mental health support drop', value: '-34%' },
-    ],
+    headline: 'Belonging improved significantly while academics stayed steady',
+    result: 'Implemented weekly "belonging circles" where students share challenges. The school redesigned lunch seating to mix friend groups and added peer mentoring. Teams reported calmer climate and fewer behavior escalations.',
+    highlight: 'Early belonging rituals created a more stable learning culture.',
   },
   {
     title: 'Riverside Academy',
@@ -133,11 +129,7 @@ const successStories = [
     timeframe: '8 months',
     headline: 'Teachers now say: "I actually know my students."',
     result: 'Shifted from traditional report cards to narrative portfolios including student self-reflections. Teachers met monthly in circles to discuss how belonging shows up in academic work. Completely changed how they graded—less punitive, more supportive.',
-    metrics: [
-      { label: 'Teacher satisfaction', value: '+58%' },
-      { label: 'Student voice score', value: '+71%' },
-      { label: 'Grading equity gaps', value: '-22%' },
-    ],
+    highlight: 'Narrative assessment shifted classroom relationships toward trust and growth.',
   },
   {
     title: 'Nova International',
@@ -146,11 +138,7 @@ const successStories = [
     timeframe: '10 months',
     headline: 'Belonging metrics predicted academic gains 3 months ahead',
     result: 'Tracked belonging metrics weekly. Schools realized that when belonging goes down, academics follow 2-3 months later. Shifted from reactive to predictive. Now intervene early based on belonging data, not crisis behavior.',
-    metrics: [
-      { label: 'Predictive accuracy', value: '89%' },
-      { label: 'Early intervention rate', value: '76%' },
-      { label: 'Academic gains (following term)', value: '+18%' },
-    ],
+    highlight: 'Weekly check-ins helped leaders intervene before problems became crises.',
   },
 ];
 
@@ -186,7 +174,7 @@ export default function SchoolPartnership() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold">Traditional School (A)</span>
-                <span className="text-lg font-bold text-white/70 light:text-slate-700">{metric.schoolA}%</span>
+                <span className="text-sm font-semibold text-white/70 light:text-slate-700">Needs support</span>
               </div>
               <div className="w-full h-3 bg-white/10 light:bg-slate-300 rounded-full overflow-hidden">
                 <div
@@ -199,7 +187,7 @@ export default function SchoolPartnership() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold">Transformed School (B)</span>
-                <span className="text-lg font-bold text-brand-teal">{metric.schoolB}%</span>
+                <span className="text-sm font-semibold text-brand-teal">Stronger climate</span>
               </div>
               <div className="w-full h-3 bg-white/10 light:bg-slate-300 rounded-full overflow-hidden">
                 <div
@@ -380,10 +368,10 @@ export default function SchoolPartnership() {
           </div>
         </header>
 
-        <main className="container-wide space-y-20 py-16">
+        <main className="container-wide space-y-14 md:space-y-16 py-14 md:py-16">
           {/* Hero Section */}
           <BlurAnimation delay={0} duration={0.9}>
-            <section className="section-shell card-surface overflow-hidden min-h-[50vh] flex items-center">
+            <section className="section-shell card-surface overflow-hidden min-h-[42vh] md:min-h-[46vh] flex items-center">
               <div className="space-y-8">
                 <SlideAnimation direction="left" delay={0.1}>
                   <div className="space-y-4">
@@ -416,21 +404,12 @@ export default function SchoolPartnership() {
 
                 <ScaleAnimation delay={0.4} scale={0.9}>
                   <div className="mt-8 p-6 glass rounded-lg border border-brand-teal/30">
-                    <p className="text-sm text-brand-teal font-semibold uppercase tracking-wide">Quick Stats</p>
+                    <p className="text-sm text-brand-teal font-semibold uppercase tracking-wide">What leaders notice first</p>
                     <StaggerAnimation delay={0.5} staggerDelay={0.1}>
-                      <div className="grid grid-cols-3 gap-4 mt-4">
-                        <div>
-                          <p className="text-2xl font-bold text-white light:text-slate-900">+47%</p>
-                          <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Belonging increase</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-white light:text-slate-900">12+</p>
-                          <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Schools transformed</p>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-white light:text-slate-900">89%</p>
-                          <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Predictive accuracy</p>
-                        </div>
+                      <div className="grid gap-3 mt-4 text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
+                        <p>Students participate more consistently in class and advisory spaces.</p>
+                        <p>Teachers spend less time in reactive discipline cycles.</p>
+                        <p>Leadership teams act earlier because warning signals are visible sooner.</p>
                       </div>
                     </StaggerAnimation>
                   </div>
@@ -534,13 +513,9 @@ export default function SchoolPartnership() {
                         <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{story.location} • {story.studentCount.toLocaleString()} students</p>
                         <p className="text-lg font-semibold text-white light:text-slate-900">{story.headline}</p>
                       </div>
-                      <div className="space-y-4">
-                        {story.metrics.map((m, i) => (
-                          <div key={i} className="space-y-1">
-                            <p className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{m.label}</p>
-                            <p className="text-2xl font-bold text-brand-teal">{m.value}</p>
-                          </div>
-                        ))}
+                      <div className="space-y-2">
+                        <p className="text-xs uppercase tracking-wide text-brand-teal">Key takeaway</p>
+                        <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{story.highlight}</p>
                       </div>
                     </div>
                     <p className="text-muted leading-relaxed border-t border-white/10 light:border-slate-200 pt-4">{story.result}</p>

@@ -1,16 +1,11 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const prefersDark = useMemo(
-    () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
-    []
-  );
-  
   const [theme, setTheme] = useState(() => {
     const stored = localStorage.getItem('theme');
-    return stored || (prefersDark ? 'dark' : 'light');
+    return stored || 'dark';
   });
 
   useEffect(() => {
@@ -19,17 +14,6 @@ export function ThemeProvider({ children }) {
     html.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const listener = (e) => {
-      if (!localStorage.getItem('theme')) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    };
-    mq.addEventListener('change', listener);
-    return () => mq.removeEventListener('change', listener);
-  }, []);
 
   const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 

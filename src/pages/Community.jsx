@@ -38,9 +38,9 @@ const timeline = [
 ];
 
 const insights = [
-  { label: 'Students reporting "seen & heard"', value: 78, delta: '+18%', color: 'from-brand-teal to-brand-blue' },
-  { label: 'Teacher-led story circles per month', value: 142, delta: '+35%', color: 'from-brand-blue to-brand-purple' },
-  { label: 'Peer mentoring pairs active', value: 320, delta: '+22%', color: 'from-brand-purple to-brand-teal' },
+  'Students are speaking up earlier when something feels off.',
+  'Teachers are using story circles as regular classroom rituals.',
+  'Peer mentorship is becoming part of everyday school culture.',
 ];
 
 const team = [
@@ -50,9 +50,9 @@ const team = [
 ];
 
 const partners = [
-  { name: 'EduCare Foundation', role: 'Teacher training partner', impact: '500+ teachers in inclusive practices.', img: 'educare.png', link: 'https://educare.org' },
+  { name: 'EduCare Foundation', role: 'Teacher training partner', impact: 'Teacher teams supported in inclusive practices.', img: 'educare.png', link: 'https://educare.org' },
   { name: 'Global Learning Alliance', role: 'Research collaborator', impact: 'Published autonomy studies together.', img: 'globallearning.jpg', link: 'https://globallearning.org' },
-  { name: 'Bright Futures NGO', role: 'Community outreach', impact: 'Peer mentoring in 20 schools.', img: 'brightfuture.png', link: 'https://brightfutures.org' },
+  { name: 'Bright Futures NGO', role: 'Community outreach', impact: 'Peer mentoring programs across partner schools.', img: 'brightfuture.png', link: 'https://brightfutures.org' },
 ];
 
 const resources = [
@@ -60,6 +60,24 @@ const resources = [
   'Belonging Circle Prompts (Slides)',
   'Emotional Well-being Activity Sheet',
   'Student Voice Survey Template',
+];
+
+const dataPulse = [
+  {
+    title: 'Classroom trust is deepening',
+    detail: 'Teachers report students opening up earlier in circle conversations.',
+    tag: 'Relational signal',
+  },
+  {
+    title: 'Participation is more consistent',
+    detail: 'More students are contributing in class without being prompted repeatedly.',
+    tag: 'Engagement signal',
+  },
+  {
+    title: 'Support happens sooner',
+    detail: 'Teams are spotting concerns earlier and acting before issues escalate.',
+    tag: 'Early response',
+  },
 ];
 
 export default function Community() {
@@ -112,7 +130,7 @@ export default function Community() {
           </div>
         </header>
 
-        <main className="container-wide space-y-20 py-16">
+        <main className="container-wide space-y-14 md:space-y-16 py-14 md:py-16">
           {/* Community Hero */}
           <BlurAnimation delay={0} duration={0.8}>
             <section className="section-shell card-surface overflow-hidden">
@@ -130,18 +148,12 @@ export default function Community() {
                 </SlideAnimation>
                 <SlideAnimation direction="right" delay={0.2}>
                   <div className="glass relative p-6">
-                    <p className="text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>Community Stats</p>
+                    <p className="text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>What we hear across communities</p>
                     <StaggerAnimation delay={0.3} staggerDelay={0.1}>
                       <div className="mt-4 space-y-3">
                         {insights.map((item) => (
-                          <div key={item.label} className="space-y-2">
-                            <div className="flex items-center justify-between text-sm font-semibold">
-                              <span>{item.label}</span>
-                              <span className="text-brand-teal">{item.delta}</span>
-                            </div>
-                            <div className="stat-bar">
-                              <div className={`stat-fill bg-gradient-to-r ${item.color}`} style={{ width: `${item.value}%` }} />
-                            </div>
+                          <div key={item} className="rounded-lg border border-white/10 light:border-slate-200 p-3 text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>
+                            {item}
                           </div>
                         ))}
                       </div>
@@ -171,22 +183,14 @@ export default function Community() {
                 </SlideAnimation>
                 <SlideAnimation direction="right" delay={0.2}>
                   <StaggerAnimation delay={0.3} staggerDelay={0.15}>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                        <p className="text-3xl font-bold text-brand-teal">+47%</p>
-                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Belonging increase</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="glass p-6 space-y-2 rounded-lg hover:shadow-lg transition-shadow">
+                        <p className="text-sm font-semibold text-brand-teal">Earlier intervention</p>
+                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Schools identify disconnection sooner and respond before it escalates.</p>
                       </div>
-                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                        <p className="text-3xl font-bold text-brand-purple">12+</p>
-                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Schools transformed</p>
-                      </div>
-                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                        <p className="text-3xl font-bold text-brand-blue">89%</p>
-                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Predictive accuracy</p>
-                      </div>
-                      <div className="glass p-6 space-y-3 rounded-lg hover:shadow-lg transition-shadow">
-                        <p className="text-3xl font-bold text-brand-teal">6-18mo</p>
-                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Implementation timeline</p>
+                      <div className="glass p-6 space-y-2 rounded-lg hover:shadow-lg transition-shadow">
+                        <p className="text-sm font-semibold text-brand-purple">Healthier classroom climate</p>
+                        <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Teachers report more trust, participation, and collaborative learning habits.</p>
                       </div>
                     </div>
                   </StaggerAnimation>
@@ -241,9 +245,7 @@ export default function Community() {
                           </div>
                         </div>
                         <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#475569' }}>{story.summary}</p>
-                        <div className="stat-bar">
-                          <div className={`stat-fill bg-gradient-to-r ${story.color}`} style={{ width: '85%' }} />
-                        </div>
+                        <div className="h-1 w-full bg-white/10 light:bg-slate-200 rounded-full" />
                       </div>
                     </DropAnimation>
                   ))}
@@ -259,12 +261,12 @@ export default function Community() {
                 <h2 className="section-title">Data Pulse</h2>
                 <StaggerAnimation delay={0.2} staggerDelay={0.1}>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {insights.map((item) => (
-                      <ScaleAnimation key={item.label} duration={0.6}>
+                    {dataPulse.map((item) => (
+                      <ScaleAnimation key={item.title} duration={0.6}>
                         <div className="tilt-card card-surface p-4 space-y-2 hover:shadow-lg transition-shadow">
-                          <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{item.label}</p>
-                          <p className="text-3xl font-bold">{item.value}%</p>
-                          <span className="badge-tile text-brand-teal">{item.delta}</span>
+                          <p className="text-sm font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>{item.title}</p>
+                          <p className="text-sm leading-relaxed" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{item.detail}</p>
+                          <span className="badge-tile text-brand-teal">{item.tag}</span>
                         </div>
                       </ScaleAnimation>
                     ))}

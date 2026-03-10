@@ -42,36 +42,38 @@ export default function Landing() {
         }}
       >
         {/* Top-left logo header */}
-        <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 flex items-center" style={{
+        <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-3 sm:py-4 flex items-center" style={{
           backgroundColor: theme === 'dark' ? 'rgba(13,17,23,0.97)' : 'rgba(255,255,255,0.97)',
           borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
           backdropFilter: 'blur(8px)'
         }}>
-          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
             <img
               src="/images/logo.png"
               alt="Project Apnapan"
-              className="h-9 w-9 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1"
+              className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1"
             />
-            <span className="text-base font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
+            <span className="hidden sm:inline text-base font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
               Project Apnapan
             </span>
           </Link>
           <div className="flex-1" />
           <Link
             to="/login"
-            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all hover:opacity-90"
             style={{
               backgroundColor: theme === 'dark' ? 'rgba(126,184,212,0.15)' : 'rgba(126,184,212,0.2)',
               color: theme === 'dark' ? '#7eb8d4' : '#1a3558',
               border: `1px solid ${theme === 'dark' ? 'rgba(126,184,212,0.3)' : 'rgba(126,184,212,0.4)'}`
             }}
           >
-            <span>👥</span> Educator Portal
+            <span>👥</span>
+            <span className="sm:hidden">Portal</span>
+            <span className="hidden sm:inline">Educator Portal</span>
           </Link>
           <button
             onClick={toggle}
-            className="px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ml-3"
+            className="px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-medium transition-all ml-2"
             style={{
               backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.06)',
               borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.12)',
@@ -86,9 +88,9 @@ export default function Landing() {
         </header>
 
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-20 md:py-28">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-[86vh] px-4 pt-24 pb-12 md:min-h-[90vh] md:pt-28 md:pb-16">
         {/* Main content */}
-        <div className="max-w-5xl mx-auto text-center space-y-10">
+        <div className="max-w-5xl mx-auto text-center space-y-8 md:space-y-9">
 
           {/* Main headline */}
           <DropAnimation delay={0} distance={50}>
@@ -113,7 +115,7 @@ export default function Landing() {
 
           {/* CTA Buttons */}
           <StaggerAnimation delay={0.3} staggerDelay={0.1} direction="up">
-            <div className="flex flex-wrap gap-4 justify-center pt-8">
+            <div className="flex flex-wrap gap-4 justify-center pt-4 md:pt-6">
               <Link
                 to="/community"
                 className="px-6 py-3 rounded-lg bg-brand-blue text-white text-base font-semibold hover:opacity-90 transition-all shadow-sm flex items-center gap-2"
@@ -146,9 +148,9 @@ export default function Landing() {
           </StaggerAnimation>
 
           {/* Stats section with scroll indicator */}
-          <div className="animate-fade-in-up animation-delay-800 pt-20">
-            <p className="text-sm mb-10" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Impact across schools:</p>
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mb-20">
+          <div className="animate-fade-in-up animation-delay-800 pt-8 md:pt-10">
+            <p className="text-sm mb-6 md:mb-7" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Impact across schools:</p>
+            <div className="grid grid-cols-3 gap-5 md:gap-8 max-w-2xl mx-auto mb-6 md:mb-8">
               <div className="group">
                 <div className="text-3xl md:text-4xl font-bold text-brand-blue group-hover:text-brand-purple transition-colors">78%</div>
                 <p className="text-sm mt-2" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Students feel seen</p>
@@ -175,7 +177,7 @@ export default function Landing() {
       </div>
 
       {/* Scroll content - The mission & vision section */}
-      <section className="relative z-10 min-h-screen flex items-center px-4 py-20" style={{
+      <section className="relative z-10 px-4 py-16 md:py-24" style={{
         background: theme === 'dark' ? '#111827' : '#f8fafc',
         borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
       }}>
@@ -308,7 +310,7 @@ export default function Landing() {
       </section>
 
       {/* Solutions section */}
-      <section className="relative z-10 flex items-center px-4 py-24" style={{
+      <section className="relative z-10 flex items-center px-4 py-16 md:py-20" style={{
         backgroundColor: theme === 'dark' ? '#111827' : '#f8fafc',
         borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
       }}>
@@ -351,7 +353,7 @@ export default function Landing() {
       </section>
 
       {/* CTA section */}
-      <section className="relative z-10 flex items-center justify-center px-4 py-28" style={{
+      <section className="relative z-10 flex items-center justify-center px-4 py-16 md:py-20" style={{
         backgroundColor: theme === 'dark' ? '#111827' : '#f0f4f8',
         borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
       }}>
