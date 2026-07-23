@@ -1,411 +1,383 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { DropAnimation, SlideAnimation, ScaleAnimation, StaggerAnimation, BlurAnimation } from '../components/ScrollAnimations';
 import { useTheme } from '../context/useTheme';
+import { GlassCard, BentoGrid, BentoItem, Section, SectionHeader, Button, Pill, StatDisplay, FeatureCard, ProgressBar, AppHeader, AppFooter } from '../components/DesignSystem';
+
+const impactMetrics = [
+  { value: '78%', label: 'Students feel seen' },
+  { value: '320+', label: 'Peer mentoring pairs' },
+  { value: '12+', label: 'Partner schools' },
+  { value: '94%', label: 'Teacher retention' },
+];
+
+const pillars = [
+  {
+    icon: '🔍',
+    title: 'Collective Inquiry',
+    description: 'Build shared understanding through data-driven inquiry and stakeholder reflections across classrooms, staff rooms, and leadership teams.',
+  },
+  {
+    icon: '🎨',
+    title: 'Co-Design Solutions',
+    description: 'Work with schools, teachers, and leaders to design contextually relevant interventions that respect local culture and resources.',
+  },
+  {
+    icon: '📊',
+    title: 'Action Research',
+    description: 'Conduct participatory research with students, teachers, and administrators to understand the real barriers to belonging.',
+  },
+  {
+    icon: '⚡',
+    title: 'Adaptive Implementation',
+    description: 'Deploy low-resource, creative solutions that reduce barriers and enhance belonging, iterating based on real-time feedback.',
+  },
+];
+
+const solutions = [
+  { number: '01', title: 'Digital & ethical AI-based K-12 Solutions', color: 'from-brand-blue to-brand-teal' },
+  { number: '02', title: 'Local Innovations rooted in global K-12 research', color: 'from-brand-teal to-brand-purple' },
+  { number: '03', title: 'The power of data & Educational Analytics', color: 'from-brand-purple to-brand-blue' },
+  { number: '04', title: 'Teacher Professional Development & Support', color: 'from-brand-teal to-brand-blue' },
+  { number: '05', title: 'Belonging-centered Curriculum Frameworks', color: 'from-brand-blue to-brand-purple' },
+  { number: '06', title: 'Research-backed Implementation Tools', color: 'from-brand-purple to-brand-teal' },
+];
+
+const problems = [
+  {
+    icon: '📉',
+    title: 'Academic Decline',
+    description: 'Disconnected students engage less, lose motivation, and struggle academically, falling behind their peers.',
+  },
+  {
+    icon: '⚠️',
+    title: 'Behavioral Problems',
+    description: 'Students without belonging are more likely to disengage, act out, or skip school entirely.',
+  },
+  {
+    icon: '💔',
+    title: 'Emotional Distress',
+    description: 'Loneliness, anxiety, and depression increase significantly when students feel they don\'t belong.',
+  },
+  {
+    icon: '⬇️',
+    title: 'Lower Self-Esteem',
+    description: 'Exclusion and invisibility shape a student\'s confidence and self-worth for years to come.',
+  },
+];
 
 export default function Landing() {
   const { theme, toggle } = useTheme();
-  const containerRef = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
+  const heroRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      mousePos.current = {
-        x: (e.clientX - rect.left) / rect.width,
-        y: (e.clientY - rect.top) / rect.height,
-      };
-
-      // Update gradient position
-      const elements = containerRef.current.querySelectorAll('[data-mouse-track]');
-      elements.forEach((el) => {
-        const x = mousePos.current.x * 100;
-        const y = mousePos.current.y * 100;
-        el.style.setProperty('--mouse-x', `${x}%`);
-        el.style.setProperty('--mouse-y', `${y}%`);
-      });
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      heroRef.current.style.setProperty('--mouse-x', `${x}%`);
+      heroRef.current.style.setProperty('--mouse-y', `${y}%`);
     };
-
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const isDark = theme === 'dark';
+
   return (
-    <>
-      <div
-        className="min-h-screen overflow-hidden"
-        ref={containerRef}
-        style={{
-          background: theme === 'dark' ? '#0d1117' : 'linear-gradient(180deg, #e9eff6 0%, #f8fafc 42%)',
-          color: theme === 'dark' ? '#f1f5f9' : '#0f172a'
-        }}
-      >
-        {/* Top-left logo header */}
-        <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-3 sm:py-4 flex items-center" style={{
-          backgroundColor: theme === 'dark' ? 'rgba(13,17,23,0.97)' : 'rgba(255,255,255,0.97)',
-          borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-          backdropFilter: 'blur(8px)'
-        }}>
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+    <div className={isDark ? '' : 'light'}>
+      <div className="min-h-screen" style={{ backgroundColor: isDark ? '#0d1117' : '#f8fafc' }}>
+
+        {/* ============================================================
+            HEADER — Enterprise Glass Header
+        ============================================================ */}
+        <AppHeader>
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0">
             <img
               src="/images/logo.png"
               alt="Project Apnapan"
-              className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl object-contain border border-white/20 light:border-slate-300 bg-white/5 p-1"
+              className="h-9 w-9 rounded-xl object-contain border"
+              style={{ borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)' }}
             />
-            <span className="hidden sm:inline text-base font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
-              Project Apnapan
-            </span>
+            <span className="hidden sm:inline text-base font-semibold">Project Apnapan</span>
           </Link>
           <div className="flex-1" />
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all hover:opacity-90"
-            style={{
-              backgroundColor: theme === 'dark' ? 'rgba(126,184,212,0.15)' : 'rgba(126,184,212,0.2)',
-              color: theme === 'dark' ? '#7eb8d4' : '#1a3558',
-              border: `1px solid ${theme === 'dark' ? 'rgba(126,184,212,0.3)' : 'rgba(126,184,212,0.4)'}`
-            }}
-          >
+          <nav className="hidden md:flex items-center gap-6 mr-4">
+            <Link to="/community" className="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity">
+              Community
+            </Link>
+            <Link to="/schools" className="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity">
+              For Schools
+            </Link>
+            <Link to="/calculator" className="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity">
+              Calculator
+            </Link>
+          </nav>
+          <Link to="/login" className="btn btn-secondary text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2">
             <span>👥</span>
-            <span className="sm:hidden">Portal</span>
             <span className="hidden sm:inline">Educator Portal</span>
+            <span className="sm:hidden">Portal</span>
           </Link>
           <button
             onClick={toggle}
-            className="px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-medium transition-all ml-2"
-            style={{
-              backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.06)',
-              borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.12)',
-              color: theme === 'dark' ? '#cbd5e1' : '#334155'
-            }}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            aria-pressed={theme === 'dark'}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="btn-ghost px-2.5 py-1.5 rounded-lg text-xs sm:text-sm"
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
           >
-            {theme === 'dark' ? '☀ Light' : '☽ Dark'}
+            {isDark ? '☀' : '☽'}
           </button>
-        </header>
+        </AppHeader>
 
+        {/* ============================================================
+            HERO SECTION — Full-viewport cinematic hero
+        ============================================================ */}
+        <section
+          ref={heroRef}
+          className="relative min-h-[90vh] flex items-center pt-20 pb-12 overflow-hidden"
+          style={{
+            background: isDark
+              ? `radial-gradient(ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(13,115,119,0.08) 0%, rgba(26,53,88,0.05) 40%, transparent 70%), linear-gradient(180deg, #0d1117 0%, #0a0e14 100%)`
+              : `radial-gradient(ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(13,115,119,0.06) 0%, rgba(26,53,88,0.03) 40%, transparent 70%), linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)`
+          }}
+        >
+          {/* Decorative gradient blobs */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl animate-blob" style={{ background: isDark ? 'rgba(13,115,119,0.15)' : 'rgba(13,115,119,0.08)' }} />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-20 blur-3xl animate-blob animation-delay-2000" style={{ background: isDark ? 'rgba(74,111,165,0.15)' : 'rgba(74,111,165,0.08)' }} />
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[86vh] px-4 pt-24 pb-12 md:min-h-[90vh] md:pt-28 md:pb-16">
-        {/* Main content */}
-        <div className="max-w-5xl mx-auto text-center space-y-8 md:space-y-9">
+          <div className="container-wide relative z-10">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+              {/* Pill label */}
+              <div className="flex justify-center">
+                <Pill color="teal">Educational Innovation · Equity · Belonging</Pill>
+              </div>
 
-          {/* Main headline */}
-          <DropAnimation delay={0} distance={50}>
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight">
-                <span className="block mb-2" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Building schools where</span>
-                <span style={{ color: theme === 'dark' ? '#7eb8d4' : '#1a3558' }}>
+              {/* Main headline */}
+              <h1 className="headline-hero animate-fade-in">
+                <span className="block mb-2" style={{ color: isDark ? '#f1f5f9' : '#0f172a' }}>
+                  Building schools where
+                </span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-teal via-brand-blue to-brand-purple">
                   every child is seen, heard, and empowered.
                 </span>
-              </h2>
-            </div>
-          </DropAnimation>
+              </h1>
 
-          {/* Subheading */}
-          <BlurAnimation delay={0.4} duration={0.9}>
-            <div className="animate-fade-in-up animation-delay-400 max-w-3xl mx-auto">
-              <p className="text-xl md:text-2xl leading-relaxed font-light" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
-                A humane, innovative, storytelling-driven platform for student autonomy and belonging.
+              {/* Subheading */}
+              <p className="subhead-hero max-w-3xl mx-auto animate-fade-in delay-200">
+                A humane, evidence-based platform that transforms school culture through 
+                belonging-centered design, data-driven insights, and co-created solutions.
               </p>
-            </div>
-          </BlurAnimation>
 
-          {/* CTA Buttons */}
-          <StaggerAnimation delay={0.3} staggerDelay={0.1} direction="up">
-            <div className="flex flex-wrap gap-4 justify-center pt-4 md:pt-6">
-              <Link
-                to="/community"
-                className="px-6 py-3 rounded-lg bg-brand-blue text-white text-base font-semibold hover:opacity-90 transition-all shadow-sm flex items-center gap-2"
-              >
-                Explore Community <span>→</span>
-              </Link>
-              <Link
-                to="/calculator"
-                className="px-6 py-3 rounded-lg text-base font-semibold transition-all border flex items-center gap-2"
-                style={{
-                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9',
-                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
-                  color: theme === 'dark' ? '#f1f5f9' : '#1a3558'
-                }}
-              >
-                Try Calculator <span>→</span>
-              </Link>
-              <Link
-                to="/schools"
-                className="px-6 py-3 rounded-lg text-base font-semibold transition-all border flex items-center gap-2"
-                style={{
-                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9',
-                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
-                  color: theme === 'dark' ? '#f1f5f9' : '#1a3558'
-                }}
-              >
-                For School Leaders <span>→</span>
-              </Link>
-            </div>
-          </StaggerAnimation>
-
-          {/* Stats section with scroll indicator */}
-          <div className="animate-fade-in-up animation-delay-800 pt-8 md:pt-10">
-            <p className="text-sm mb-6 md:mb-7" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Impact across schools:</p>
-            <div className="grid grid-cols-3 gap-5 md:gap-8 max-w-2xl mx-auto mb-6 md:mb-8">
-              <div className="group">
-                <div className="text-3xl md:text-4xl font-bold text-brand-blue group-hover:text-brand-purple transition-colors">78%</div>
-                <p className="text-sm mt-2" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Students feel seen</p>
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap gap-4 justify-center pt-4 animate-fade-in delay-400">
+                <Button variant="primary" size="lg" href="/community">
+                  Explore the Community
+                  <span className="text-lg ml-1">→</span>
+                </Button>
+                <Button variant="secondary" size="lg" href="/schools">
+                  For School Leaders
+                </Button>
+                <Button variant="ghost" size="lg" href="/calculator">
+                  Belonging Calculator
+                </Button>
               </div>
-              <div className="group">
-                <div className="text-3xl md:text-4xl font-bold text-brand-teal group-hover:text-brand-blue transition-colors">320+</div>
-                <p className="text-sm mt-2" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Peer mentoring pairs</p>
-              </div>
-              <div className="group">
-                <div className="text-3xl md:text-4xl font-bold text-brand-purple group-hover:text-brand-teal transition-colors">12+</div>
-                <p className="text-sm mt-2" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Schools partnering</p>
-              </div>
-            </div>
 
-            {/* Scroll indicator */}
-            <div className="flex flex-col items-center gap-2 animate-bounce">
-              <p className="text-xs uppercase tracking-widest" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Scroll to explore</p>
-              <svg className="w-6 h-6 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Scroll content - The mission & vision section */}
-      <section className="relative z-10 px-4 py-16 md:py-24" style={{
-        background: theme === 'dark' ? '#111827' : '#f8fafc',
-        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
-      }}>
-        <div className="max-w-5xl mx-auto w-full">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left side - Why we exist */}
-            <SlideAnimation direction="left" delay={0}>
-              <div className="space-y-6" data-mouse-track>
-                <div className="inline-block">
-                  <span className="px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider text-brand-blue border border-brand-blue/30" style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(26,53,88,0.3)' : 'rgba(226, 232, 240, 1)'
-                  }}>Why we exist</span>
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
-                  Think back to your school days
-                </h3>
-                <p className="text-lg leading-relaxed" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
-                  Was there ever a moment when you felt truly <span className="text-brand-blue font-semibold\">valued</span>, <span className="text-brand-purple font-semibold\">heard</span>, <span className="text-brand-teal font-semibold\">safe</span>, or <span className="text-brand-blue font-semibold\">connected</span>?
-                </p>
-                <p className="leading-relaxed" style={{ color: theme === 'dark' ? '#94a3b8' : '#475569' }}>
-                  Maybe it was a teacher who noticed your effort, a friend who supported you, or just knowing you had a place where you belonged.
-                </p>
-                <p className="text-lg italic pt-4 border-l-4 border-brand-blue pl-4" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>
-                  "Now imagine the opposite—feeling invisible, unheard, or unsafe. That's the difference between a student who thrives and one who disengages."
-                </p>
-              </div>
-            </SlideAnimation>
-
-            {/* Right side - The problem */}
-            <SlideAnimation direction="right" delay={0.1}>
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  {[
-                    {
-                      icon: '📉',
-                      title: 'Academic Decline',
-                      desc: 'Disconnected students engage less, lose motivation, and struggle academically.',
-                    },
-                    {
-                      icon: '⚠️',
-                      title: 'Behavioral Problems',
-                      desc: 'Students without belonging are more likely to disengage, act out, or skip school.',
-                    },
-                    {
-                      icon: '💔',
-                      title: 'Emotional Distress',
-                      desc: 'Loneliness, anxiety, and depression increase when students feel they don\'t belong.',
-                    },
-                    {
-                      icon: '⬇️',
-                      title: 'Lower Self-Esteem',
-                      desc: 'Exclusion shapes a student\'s confidence and self-worth for years to come.',
-                    },
-                  ].map((item, idx) => (
-                    <DropAnimation key={idx} delay={0.1 + idx * 0.1} distance={30}>
-                      <div className="group bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:translate-y-[-4px]">
-                        <div className="flex gap-3">
-                          <span className="text-2xl flex-shrink-0">{item.icon}</span>
-                          <div>
-                            <h4 className="font-bold text-base text-white mb-1">{item.title}</h4>
-                            <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#475569' }}>{item.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </DropAnimation>
+              {/* Stats */}
+              <div className="pt-10 sm:pt-14 animate-fade-in delay-600">
+                <p className="label mb-6 opacity-50">Impact across partner schools</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 max-w-3xl mx-auto">
+                  {impactMetrics.map((stat) => (
+                    <StatDisplay key={stat.label} value={stat.value} label={stat.label} />
                   ))}
                 </div>
               </div>
-            </SlideAnimation>
+
+              {/* Scroll indicator */}
+              <div className="pt-8 animate-pulse-soft">
+                <p className="label opacity-30 mb-2">Scroll to explore</p>
+                <svg className="w-5 h-5 mx-auto opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Our approach section */}
-      <section className="relative z-10 flex items-center px-4 py-24" style={{
-        backgroundColor: theme === 'dark' ? '#0d1117' : '#ffffff',
-        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
-      }}>
-        <div className="max-w-5xl mx-auto w-full">
-          <BlurAnimation delay={0} duration={0.8}>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Our Four-Pillar Approach</h2>
-              <p className="text-base" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Creating inclusive environments through research, co-design, and adaptive implementation</p>
+        {/* ============================================================
+            WHY IT MATTERS — Problem & Vision
+        ============================================================ */}
+        <Section dark>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left — Vision */}
+            <div className="space-y-6">
+              <Pill color="blue">Why we exist</Pill>
+              <h2 className="headline-section">
+                Think back to your school days
+              </h2>
+              <p className="body-large opacity-80">
+                Was there ever a moment when you felt truly{' '}
+                <span className="text-brand-teal font-semibold">valued</span>,{' '}
+                <span className="text-brand-purple font-semibold">heard</span>, or{' '}
+                <span className="text-brand-blue font-semibold">connected</span>?
+              </p>
+              <p className="body-base opacity-60">
+                Maybe it was a teacher who noticed your effort, a friend who supported you, 
+                or just knowing you had a place where you belonged.
+              </p>
+              <div className="pl-5 border-l-2" style={{ borderColor: '#0d7377' }}>
+                <p className="body-base italic opacity-75">
+                  "Now imagine the opposite—feeling invisible, unheard, or unsafe. 
+                  That's the difference between a student who thrives and one who disengages."
+                </p>
+              </div>
             </div>
-          </BlurAnimation>
 
-          <StaggerAnimation delay={0.2} staggerDelay={0.15} direction="up">
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: '🔍',
-                  title: 'Collective Inquiry',
-                  desc: 'Build shared understanding through data-driven inquiry and stakeholder reflections.',
-                },
-                {
-                  icon: '🎨',
-                  title: 'Co-Design Solutions',
-                  desc: 'Work with schools, teachers, and leaders to design contextually relevant interventions.',
-                },
-                {
-                  icon: '📊',
-                  title: 'Action Research',
-                  desc: 'Conduct research with students, teachers, and administrators to understand belonging barriers.',
-                },
-                {
-                  icon: '⚡',
-                  title: 'Adaptive Implementation',
-                  desc: 'Implement low-resource, creative solutions to reduce barriers and enhance belonging.',
-                },
-              ].map((pillar, idx) => (
+            {/* Right — Problems as Bento cards */}
+            <div className="grid gap-4">
+              {problems.map((problem, idx) => (
                 <div
                   key={idx}
-                  className="rounded-xl p-7 border transition-all duration-200 hover:-translate-y-0.5"
-                  style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#ffffff',
-                    borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0',
-                    boxShadow: theme === 'dark' ? 'none' : '0 1px 4px rgba(0,0,0,0.06)'
-                  }}
+                  className="glass-card p-5 hover-lift animate-fade-in"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
                 >
-                  <div className="space-y-3">
-                    <div className="text-3xl">{pillar.icon}</div>
-                    <h3 className="text-xl font-semibold" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>{pillar.title}</h3>
-                    <p className="leading-relaxed text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#475569' }}>{pillar.desc}</p>
+                  <div className="flex gap-4 items-start">
+                    <span className="text-2xl flex-shrink-0 mt-1">{problem.icon}</span>
+                    <div>
+                      <h4 className="font-semibold mb-1">{problem.title}</h4>
+                      <p className="body-small opacity-70">{problem.description}</p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          </StaggerAnimation>
-        </div>
-      </section>
+          </div>
+        </Section>
 
-      {/* Solutions section */}
-      <section className="relative z-10 flex items-center px-4 py-16 md:py-20" style={{
-        backgroundColor: theme === 'dark' ? '#111827' : '#f8fafc',
-        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
-      }}>
-        <div className="max-w-5xl mx-auto w-full">
-          <BlurAnimation delay={0} duration={0.8}>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>Our Solutions</h2>
-              <p className="text-base" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>Comprehensive, evidence-based tools and frameworks</p>
-            </div>
-          </BlurAnimation>
+        {/* ============================================================
+            OUR APPROACH — Four Pillars (Bento Grid)
+        ============================================================ */}
+        <Section>
+          <SectionHeader
+            title="Our Four-Pillar Approach"
+            subtitle="Creating inclusive school environments through research, co-design, and adaptive implementation"
+          />
+          <BentoGrid>
+            {pillars.map((pillar, idx) => (
+              <BentoItem key={idx} colSpan={idx === 0 ? 2 : 1} rowSpan={idx === 0 ? 1 : 1}>
+                <div className="space-y-4">
+                  <span className="text-4xl">{pillar.icon}</span>
+                  <h3 className="headline-card">{pillar.title}</h3>
+                  <p className="body-base opacity-75">{pillar.description}</p>
+                </div>
+              </BentoItem>
+            ))}
+          </BentoGrid>
+        </Section>
 
-          <StaggerAnimation delay={0.2} staggerDelay={0.1} direction="left">
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                'Digital & ethical AI-based K-12 Solutions',
-                'Local Innovations rooted in global K-12 research',
-                'The power of data & Educational Analytics',
-                'Teacher Professional Development & Support',
-                'Belonging-centered Curriculum Frameworks',
-                'Research-backed Implementation Tools',
-              ].map((solution, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-4 p-5 rounded-lg border transition-all duration-200"
+        {/* ============================================================
+            SOLUTIONS — Numbered Feature List
+        ============================================================ */}
+        <Section dark>
+          <SectionHeader
+            title="Our Solutions"
+            subtitle="Comprehensive, evidence-based tools and frameworks for educational transformation"
+          />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {solutions.map((solution, idx) => (
+              <div
+                key={idx}
+                className="glass-card p-6 flex items-start gap-4 hover-lift"
+              >
+                <span
+                  className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold border"
                   style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#ffffff',
-                    borderColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0',
-                    boxShadow: theme === 'dark' ? 'none' : '0 1px 4px rgba(0,0,0,0.05)'
+                    background: `linear-gradient(135deg, rgba(13,115,119,0.15), rgba(26,53,88,0.15))`,
+                    borderColor: 'rgba(255,255,255,0.1)',
                   }}
                 >
-                  <div className="flex-shrink-0 w-8 h-8 rounded-md bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-sm border border-brand-blue/20">
-                    {idx + 1}
-                  </div>
-                  <p className="font-medium text-sm" style={{ color: theme === 'dark' ? '#cbd5e1' : '#334155' }}>{solution}</p>
-                </div>
-              ))}
-            </div>
-          </StaggerAnimation>
-        </div>
-      </section>
+                  {solution.number}
+                </span>
+                <p className="font-medium leading-relaxed">{solution.title}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
 
-      {/* CTA section */}
-      <section className="relative z-10 flex items-center justify-center px-4 py-16 md:py-20" style={{
-        backgroundColor: theme === 'dark' ? '#111827' : '#f0f4f8',
-        borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
-      }}>
-        <BlurAnimation delay={0} duration={1}>
-          <div className="max-w-2xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight" style={{ color: theme === 'dark' ? '#f1f5f9' : '#0f172a' }}>
+        {/* ============================================================
+            IMPACT — Data Stories
+        ============================================================ */}
+        <Section>
+          <SectionHeader
+            title="The Belonging Transformation"
+            subtitle="What happens when schools measure what actually matters"
+          />
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="glass-card p-6 space-y-5">
+              <Pill color="teal">Traditional School</Pill>
+              <ProgressBar value={38} label="Student Voice & Agency" />
+              <ProgressBar value={45} label="Student Belonging" />
+              <ProgressBar value={52} label="Classroom Safety" />
+              <ProgressBar value={58} label="Student-Reported Wellbeing" />
+            </div>
+            <div className="glass-card p-6 space-y-5 border-l-4" style={{ borderLeftColor: '#0d7377' }}>
+              <Pill color="teal">Transformed School</Pill>
+              <ProgressBar value={82} label="Student Voice & Agency" />
+              <ProgressBar value={88} label="Student Belonging" />
+              <ProgressBar value={91} label="Classroom Safety" />
+              <ProgressBar value={89} label="Student-Reported Wellbeing" />
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="body-small opacity-50">
+              Same academic benchmarks. Completely different lived experiences.
+            </p>
+          </div>
+        </Section>
+
+        {/* ============================================================
+            CTA SECTION
+        ============================================================ */}
+        <Section className="!py-20 lg:!py-28">
+          <div className="glass-card p-10 sm:p-14 lg:p-16 text-center space-y-8 max-w-4xl mx-auto">
+            <h2 className="headline-section">
               Ready to transform your school?
             </h2>
-            <p className="text-lg leading-relaxed" style={{ color: theme === 'dark' ? '#94a3b8' : '#475569' }}>
-              Join educators, schools, and communities building a future where every child feels they belong.
+            <p className="subhead-section max-w-2xl mx-auto">
+              Join a growing community of educators, school leaders, and changemakers 
+              building a future where every child feels they belong.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-              <Link
-                to="/community"
-                className="px-6 py-3 rounded-lg bg-brand-blue text-white font-semibold hover:opacity-90 transition-all shadow-sm"
-              >
+            <div className="flex flex-wrap gap-4 justify-center pt-2">
+              <Button variant="primary" size="lg" href="/community">
                 Join the Community
-              </Link>
-              <a
-                href="mailto:projectapnapan@gmail.com"
-                className="px-6 py-3 rounded-lg font-semibold border transition-all"
-                style={{
-                  backgroundColor: 'transparent',
-                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.2)' : '#cbd5e1',
-                  color: theme === 'dark' ? '#f1f5f9' : '#334155'
-                }}
-              >
+              </Button>
+              <Button variant="secondary" size="lg" href="mailto:projectapnapan@gmail.com">
                 Contact Us
-              </a>
+              </Button>
             </div>
-
-            <p className="text-sm pt-4" style={{ color: theme === 'dark' ? '#64748b' : '#94a3b8' }}>projectapnapan@gmail.com</p>
+            <p className="body-small opacity-50">
+              projectapnapan@gmail.com
+            </p>
           </div>
-        </BlurAnimation>
-      </section>
+        </Section>
 
-      {/* Admin Access Button */}
-      <div className="fixed bottom-4 left-4 z-40">
-        <Link
-          to="/admin/login"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold transition-all hover:shadow-md"
-          style={{
-            borderColor: theme === 'dark' ? 'rgba(139,92,246,0.4)' : 'rgba(139,92,246,0.35)',
-            color: theme === 'dark' ? '#c4b5fd' : '#7c3aed',
-            backgroundColor: theme === 'dark' ? 'rgba(139,92,246,0.08)' : 'rgba(139,92,246,0.06)',
-          }}
-        >
-          🛡 Admin Portal
-        </Link>
+        {/* ============================================================
+            FOOTER
+        ============================================================ */}
+        <AppFooter />
+
+        {/* Admin Access */}
+        <div className="fixed bottom-4 left-4 z-40">
+          <Link
+            to="/admin/login"
+            className="btn-ghost px-4 py-2 rounded-lg border text-sm font-semibold"
+            style={{
+              borderColor: isDark ? 'rgba(139,92,246,0.3)' : 'rgba(139,92,246,0.25)',
+              color: isDark ? '#c4b5fd' : '#7c3aed',
+              background: isDark ? 'rgba(139,92,246,0.08)' : 'rgba(139,92,246,0.05)',
+            }}
+          >
+            🛡 Admin
+          </Link>
+        </div>
       </div>
-      </div>
-    </>
+    </div>
   );
 }

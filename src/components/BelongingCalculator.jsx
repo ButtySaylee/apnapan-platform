@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { DropAnimation, StaggerAnimation, BlurAnimation } from './ScrollAnimations';
+import { GlassCard, Button, Pill, Section, SectionHeader, StatDisplay, ProgressBar, MetricCard } from './DesignSystem';
 
 function useTheme() {
   const prefersDark = useMemo(

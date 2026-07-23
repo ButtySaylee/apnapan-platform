@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BlurAnimation, StaggerAnimation, DropAnimation } from '../components/ScrollAnimations';
 import { useAuth } from '../context/useAuth';
 import { useTheme } from '../context/useTheme';
+import { GlassCard, Button, Pill, Input, AppHeader, AppFooter, Divider, Modal, StatDisplay, MetricCard, ProgressBar, Skeleton } from '../components/DesignSystem';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
 const CATEGORIES = ['Activities', 'Assessments', 'Curriculum', 'Documentation', 'Other'];
@@ -375,209 +375,104 @@ export default function TeacherDashboard() {
         {/* Main Content */}
         <main className="container-wide space-y-20 py-16">
           {/* Welcome Section */}
-          <BlurAnimation delay={0} duration={0.8}>
-            <section
-              className="card-surface p-6 sm:p-8 md:p-10"
-              style={isLight ? { borderColor: '#cbd5e1', boxShadow: '0 6px 18px rgba(15,23,42,0.06)' } : undefined}
-            >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div className="space-y-2">
-                  <h2 className="text-3xl font-bold">Welcome back, {userData.name.split(' ')[0]}! 👋</h2>
-                  <p style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
-                    {userData.school} · {userData.subject}
-                  </p>
-                </div>
-                <button
-                  onClick={openModal}
-                  className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
-                >
-                  <span>📤</span> Upload Resource
-                </button>
+          <section className="glass-card p-6 sm:p-8 md:p-10">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div className="space-y-2">
+                <h2 className="headline-section">Welcome back, {userData.name.split(' ')[0]}! 👋</h2>
+                <p className="body-base opacity-60">
+                  {userData.school} · {userData.subject}
+                </p>
               </div>
-            </section>
-          </BlurAnimation>
+              <Button variant="primary" onClick={openModal}>
+                <span>📤</span> Upload Resource
+              </Button>
+            </div>
+          </section>
 
           {/* Stats Overview */}
-          <StaggerAnimation delay={0.2} staggerDelay={0.1}>
-            <section className="grid gap-6 sm:grid-cols-1">
-              {stats.map((stat, idx) => (
-                <DropAnimation key={stat.label} delay={idx * 0.1} distance={30}>
-                  <div
-                    className="card-surface p-6 space-y-3 hover:shadow-lg transition-shadow"
-                    style={isLight ? { borderColor: '#cbd5e1', boxShadow: '0 6px 18px rgba(15,23,42,0.06)' } : undefined}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-3xl">{stat.icon}</span>
-                      <div className={`px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${stat.color} text-white`}>
-                        Active
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-bold text-brand-blue">{stat.value}</div>
-                      <p className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>{stat.label}</p>
-                    </div>
-                  </div>
-                </DropAnimation>
-              ))}
-            </section>
-          </StaggerAnimation>
+          <section className="grid gap-6 sm:grid-cols-1">
+            {stats.map((stat, idx) => (
+              <div key={stat.label} className="glass-card p-6 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-3xl">{stat.icon}</span>
+                  <Pill color="teal">Active</Pill>
+                </div>
+                <div>
+                  <div className="stat-value text-brand-blue">{stat.value}</div>
+                  <p className="stat-label">{stat.label}</p>
+                </div>
+              </div>
+            ))}
+          </section>
 
           {/* My Resources */}
-          <BlurAnimation delay={0.3} duration={0.8}>
-            <section
-              className="card-surface p-6 sm:p-8 md:p-10 space-y-8"
-              style={isLight ? { borderColor: '#cbd5e1', boxShadow: '0 8px 22px rgba(15,23,42,0.07)' } : undefined}
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold">My Resources</h3>
-                <span className="text-sm" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
-                  {myResources.length} total
-                </span>
-              </div>
+          <section className="glass-card p-6 sm:p-8 md:p-10 space-y-8">
+            <div className="flex items-center justify-between">
+              <h3 className="headline-card">My Resources</h3>
+              <span className="text-sm opacity-60">
+                {myResources.length} total
+              </span>
+            </div>
 
-              {resourceActionError && (
-                <p className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
-                  {resourceActionError}
-                </p>
-              )}
+            {resourceActionError && (
+              <p className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+                {resourceActionError}
+              </p>
+            )}
 
-              <StaggerAnimation delay={0.4} staggerDelay={0.1}>
-                <div className="space-y-4">
-                  {loadingResources ? (
-                    <div className="text-center py-8" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
-                      Loading resources…
-                    </div>
-                  ) : myResources.map((resource) => (
-                    <div
-                      key={resource.id}
-                      className="glass p-6 rounded-lg hover:shadow-lg transition-all"
-                      style={{
-                        backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f8fafc',
-                        borderColor: theme === 'dark' ? 'rgba(255,255,255,0.10)' : '#e2e8f0',
-                        borderWidth: 1,
-                        borderStyle: 'solid',
-                      }}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-start gap-3">
-                            <span className="text-2xl">📄</span>
-                            <div className="flex-1">
-                              <h4 className="font-bold text-lg">{resource.title}</h4>
-                              <div className="flex flex-wrap items-center gap-3 mt-2">
-                                <span
-                                  className="pill text-xs"
-                                  style={{
-                                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.10)' : '#e2e8f0',
-                                    color: theme === 'dark' ? '#e2e8f0' : '#334155',
-                                  }}
-                                >
-                                  {resource.category}
-                                </span>
-                                <span
-                                  className="px-2 py-0.5 rounded-full text-[10px] font-semibold border"
-                                  style={resource.is_public
-                                    ? {
-                                        backgroundColor: theme === 'dark' ? 'rgba(34,197,94,0.20)' : 'rgba(34,197,94,0.12)',
-                                        color: theme === 'dark' ? '#4ade80' : '#166534',
-                                        borderColor: theme === 'dark' ? 'rgba(34,197,94,0.35)' : 'rgba(22,101,52,0.25)',
-                                      }
-                                    : {
-                                        backgroundColor: theme === 'dark' ? 'rgba(148,163,184,0.18)' : 'rgba(100,116,139,0.12)',
-                                        color: theme === 'dark' ? '#cbd5e1' : '#334155',
-                                        borderColor: theme === 'dark' ? 'rgba(148,163,184,0.3)' : 'rgba(51,65,85,0.2)',
-                                      }}
-                                >
-                                  {resource.is_public ? 'Shared' : 'Hidden'}
-                                </span>
-                                <span className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
-                                  {resource.downloads} downloads
-                                </span>
-                                <span className="text-xs" style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
-                                  {new Date(resource.date).toLocaleDateString()}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {resource.file_url && (
-                            <a
-                              href={resource.file_url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="px-3 py-1.5 text-sm rounded-lg border transition-all"
-                              style={{
-                                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
-                                color: theme === 'dark' ? '#e2e8f0' : '#334155',
-                                backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#ffffff',
-                              }}
-                            >
-                              View
-                            </a>
-                          )}
-                          <button
-                            onClick={() => handleShareToggle(resource)}
-                            className="px-3 py-1.5 text-sm rounded-lg border transition-all"
-                            style={{
-                              borderColor: resource.is_public
-                                ? 'rgba(245,158,11,0.35)'
-                                : (theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1'),
-                              color: resource.is_public ? '#b45309' : (theme === 'dark' ? '#e2e8f0' : '#334155'),
-                              backgroundColor: resource.is_public
-                                ? (theme === 'dark' ? 'rgba(245,158,11,0.14)' : 'rgba(245,158,11,0.10)')
-                                : (theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#ffffff'),
-                            }}
-                          >
-                            {resource.is_public ? 'Hide' : 'Share'}
-                          </button>
-                          <button
-                            onClick={() => openEditModal(resource)}
-                            className="px-3 py-1.5 text-sm rounded-lg border transition-all"
-                            style={{
-                              borderColor: theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#cbd5e1',
-                              color: theme === 'dark' ? '#e2e8f0' : '#334155',
-                              backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#ffffff',
-                            }}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDeleteResource(resource)}
-                            className="px-3 py-1.5 text-sm rounded-lg border transition-all disabled:opacity-50"
-                            style={{
-                              borderColor: theme === 'dark' ? 'rgba(239,68,68,0.35)' : 'rgba(220,38,38,0.28)',
-                              color: theme === 'dark' ? '#fca5a5' : '#b91c1c',
-                              backgroundColor: theme === 'dark' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.08)',
-                            }}
-                            disabled={deletingResourceId === resource.id}
-                          >
-                            {deletingResourceId === resource.id ? 'Deleting...' : 'Delete'}
-                          </button>
+            <div className="space-y-4">
+              {loadingResources ? (
+                <div className="text-center py-8 opacity-60">
+                  Loading resources…
+                </div>
+              ) : myResources.map((resource) => (
+                <div
+                  key={resource.id}
+                  className="glass-card p-5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4"
+                >
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">📄</span>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-lg">{resource.title}</h4>
+                        <div className="flex flex-wrap items-center gap-3 mt-2">
+                          <Pill>{resource.category}</Pill>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                            resource.is_public ? 'text-green-400 border-green-400/30 bg-green-400/10' : 'opacity-60'
+                          }`}>
+                            {resource.is_public ? 'Shared' : 'Hidden'}
+                          </span>
+                          <span className="text-xs opacity-60">{resource.downloads} downloads</span>
+                          <span className="text-xs opacity-60">{new Date(resource.date).toLocaleDateString()}</span>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {resource.file_url && (
+                      <a href={resource.file_url} target="_blank" rel="noreferrer" className="btn btn-secondary py-1.5 px-3 text-xs">View</a>
+                    )}
+                    <button onClick={() => handleShareToggle(resource)} className={`btn py-1.5 px-3 text-xs ${resource.is_public ? 'btn-secondary' : 'btn-ghost'}`}>
+                      {resource.is_public ? 'Hide' : 'Share'}
+                    </button>
+                    <button onClick={() => openEditModal(resource)} className="btn btn-secondary py-1.5 px-3 text-xs">Edit</button>
+                    <button onClick={() => handleDeleteResource(resource)} className="btn py-1.5 px-3 text-xs" style={{ color: '#fca5a5', borderColor: 'rgba(239,68,68,0.35)' }} disabled={deletingResourceId === resource.id}>
+                      {deletingResourceId === resource.id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </div>
                 </div>
-              </StaggerAnimation>
+              ))}
+            </div>
 
-              {!loadingResources && myResources.length === 0 && (
-                <div className="text-center py-12 space-y-4">
-                  <div className="text-6xl">📚</div>
-                  <h4 className="text-xl font-bold">No resources yet</h4>
-                  <p style={{ color: theme === 'dark' ? '#94a3b8' : '#64748b' }}>
-                    Start sharing your materials with the community
-                  </p>
-                  <button
-                    onClick={openModal}
-                    className="btn btn-primary"
-                  >
-                    Upload Your First Resource
-                  </button>
-                </div>
-              )}
-            </section>
-          </BlurAnimation>
+            {!loadingResources && myResources.length === 0 && (
+              <div className="text-center py-12 space-y-4">
+                <div className="text-6xl">📚</div>
+                <h4 className="text-xl font-bold">No resources yet</h4>
+                <p className="opacity-60">Start sharing your materials with the community</p>
+                <Button variant="primary" onClick={openModal}>Upload Your First Resource</Button>
+              </div>
+            )}
+          </section>
         </main>
 
         {/* Upload Modal */}

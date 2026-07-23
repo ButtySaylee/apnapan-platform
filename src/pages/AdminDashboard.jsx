@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BlurAnimation, StaggerAnimation, DropAnimation } from '../components/ScrollAnimations';
 import { useAuth } from '../context/useAuth';
 import { useTheme } from '../context/useTheme';
+import { GlassCard, Button, Pill, Input, AppHeader, Divider, Modal, StatDisplay, MetricCard, ProgressBar, Skeleton } from '../components/DesignSystem';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
 const CATEGORIES = ['Activities', 'Assessments', 'Curriculum', 'Documentation', 'Guides', 'Other'];
