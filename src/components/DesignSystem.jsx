@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 /**
  * APNApan Design System Components
@@ -85,20 +86,30 @@ export function SectionHeader({ title, subtitle, className = '', align = 'center
 // ============================================================
 // BUTTONS
 // ============================================================
-export function Button({ children, variant = 'primary', className = '', size = 'default', href, ...props }) {
+export function Button({ children, variant = 'primary', className = '', size = 'default', href, to, ...props }) {
   const sizeClass = size === 'sm' ? 'px-4 py-2 text-xs' : size === 'lg' ? 'px-7 py-3.5 text-base' : '';
   const variantClass = variant === 'primary' ? 'btn-primary' : variant === 'secondary' ? 'btn-secondary' : variant === 'ghost' ? 'btn-ghost' : 'btn-primary';
+  const finalClassName = `btn ${variantClass} ${sizeClass} ${className}`;
+  
+  // Use React Router Link for internal navigation, <a> for external links
+  if (href && href.startsWith('/')) {
+    return (
+      <Link to={href} className={finalClassName} {...props}>
+        {children}
+      </Link>
+    );
+  }
   
   if (href) {
     return (
-      <a href={href} className={`btn ${variantClass} ${sizeClass} ${className}`} {...props}>
+      <a href={href} className={finalClassName} {...props}>
         {children}
       </a>
     );
   }
   
   return (
-    <button className={`btn ${variantClass} ${sizeClass} ${className}`} {...props}>
+    <button className={finalClassName} {...props}>
       {children}
     </button>
   );
