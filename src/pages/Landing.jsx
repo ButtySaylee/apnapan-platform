@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/useTheme';
 import { GlassCard, BentoGrid, BentoItem, Section, SectionHeader, Button, Pill, StatDisplay, FeatureCard, ProgressBar, AppHeader, AppFooter } from '../components/DesignSystem';
+import { ScrollReveal, StaggerGroup } from '../components/ScrollReveal';
+import { ParticleField, MorphBlob, GradientMesh, ScanLine, OrbitingRings, DataStream } from '../components/FuturisticBackground';
 
 const impactMetrics = [
   { value: '78%', label: 'Students feel seen' },
@@ -86,7 +88,13 @@ export default function Landing() {
 
   return (
     <div className={isDark ? '' : 'light'}>
-      <div className="min-h-screen" style={{ backgroundColor: isDark ? '#0d1117' : '#f8fafc' }}>
+      <div className="min-h-screen relative" style={{ backgroundColor: isDark ? '#0d1117' : '#f8fafc' }}>
+        
+        {/* ============================================================
+            GLOBAL FUTURISTIC BACKGROUND LAYER
+        ============================================================ */}
+        <ParticleField count={50} color="rgba(13, 115, 119, 0.12)" speed={0.2} />
+        <div className="fixed inset-0 pointer-events-none z-[1] futuristic-grid" />
 
         {/* ============================================================
             HEADER — Enterprise Glass Header
@@ -128,7 +136,7 @@ export default function Landing() {
         </AppHeader>
 
         {/* ============================================================
-            HERO SECTION — Full-viewport cinematic hero
+            HERO SECTION — Full-viewport cinematic hero with futuristic effects
         ============================================================ */}
         <section
           ref={heroRef}
@@ -139,6 +147,15 @@ export default function Landing() {
               : `radial-gradient(ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(13,115,119,0.06) 0%, rgba(26,53,88,0.03) 40%, transparent 70%), linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)`
           }}
         >
+          {/* Futuristic background elements — enhanced visibility */}
+          <GradientMesh />
+          <MorphBlob size={600} color="rgba(13, 115, 119, 0.12)" left="20%" top="30%" speed={10} />
+          <MorphBlob size={500} color="rgba(59, 130, 246, 0.08)" left="70%" top="55%" speed={8} />
+          <MorphBlob size={400} color="rgba(74, 111, 165, 0.06)" left="50%" top="70%" speed={12} />
+          <OrbitingRings />
+          <ScanLine />
+          <DataStream lines={8} />
+
           {/* Decorative gradient blobs */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl animate-blob" style={{ background: isDark ? 'rgba(13,115,119,0.15)' : 'rgba(13,115,119,0.08)' }} />
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-20 blur-3xl animate-blob animation-delay-2000" style={{ background: isDark ? 'rgba(74,111,165,0.15)' : 'rgba(74,111,165,0.08)' }} />
@@ -146,49 +163,59 @@ export default function Landing() {
           <div className="container-wide relative z-10">
             <div className="max-w-4xl mx-auto text-center space-y-8">
               {/* Pill label */}
-              <div className="flex justify-center">
-                <Pill color="teal">Educational Innovation · Equity · Belonging</Pill>
-              </div>
+              <ScrollReveal animation="reveal-up" delay={0}>
+                <div className="flex justify-center">
+                  <Pill color="teal">Educational Innovation · Equity · Belonging</Pill>
+                </div>
+              </ScrollReveal>
 
               {/* Main headline */}
-              <h1 className="headline-hero animate-fade-in">
-                <span className="block mb-2" style={{ color: isDark ? '#f1f5f9' : '#0f172a' }}>
-                  Building schools where
-                </span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-teal via-brand-blue to-brand-purple">
-                  every child is seen, heard, and empowered.
-                </span>
-              </h1>
+              <ScrollReveal animation="reveal-up" delay={0.1}>
+                <h1 className="headline-hero">
+                  <span className="block mb-2" style={{ color: isDark ? '#f1f5f9' : '#0f172a' }}>
+                    Building schools where
+                  </span>
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-teal via-brand-blue to-brand-purple text-glow-teal">
+                    every child is seen, heard, and empowered.
+                  </span>
+                </h1>
+              </ScrollReveal>
 
               {/* Subheading */}
-              <p className="subhead-hero max-w-3xl mx-auto animate-fade-in delay-200">
-                A humane, evidence-based platform that transforms school culture through 
-                belonging-centered design, data-driven insights, and co-created solutions.
-              </p>
+              <ScrollReveal animation="reveal-up" delay={0.2}>
+                <p className="subhead-hero max-w-3xl mx-auto">
+                  A humane, evidence-based platform that transforms school culture through 
+                  belonging-centered design, data-driven insights, and co-created solutions.
+                </p>
+              </ScrollReveal>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4 justify-center pt-4 animate-fade-in delay-400">
-                <Button variant="primary" size="lg" href="/community">
-                  Explore the Community
-                  <span className="text-lg ml-1">→</span>
-                </Button>
-                <Button variant="secondary" size="lg" href="/schools">
-                  For School Leaders
-                </Button>
-                <Button variant="ghost" size="lg" href="/calculator">
-                  Belonging Calculator
-                </Button>
-              </div>
+              <ScrollReveal animation="reveal-up" delay={0.3}>
+                <div className="flex flex-wrap gap-4 justify-center pt-4">
+                  <Button variant="primary" size="lg" href="/community">
+                    Explore the Community
+                    <span className="text-lg ml-1">→</span>
+                  </Button>
+                  <Button variant="secondary" size="lg" href="/schools">
+                    For School Leaders
+                  </Button>
+                  <Button variant="ghost" size="lg" href="/calculator">
+                    Belonging Calculator
+                  </Button>
+                </div>
+              </ScrollReveal>
 
               {/* Stats */}
-              <div className="pt-10 sm:pt-14 animate-fade-in delay-600">
-                <p className="label mb-6 opacity-50">Impact across partner schools</p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 max-w-3xl mx-auto">
-                  {impactMetrics.map((stat) => (
-                    <StatDisplay key={stat.label} value={stat.value} label={stat.label} />
-                  ))}
+              <ScrollReveal animation="reveal-up" delay={0.4}>
+                <div className="pt-10 sm:pt-14">
+                  <p className="label mb-6 opacity-50">Impact across partner schools</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 max-w-3xl mx-auto">
+                    {impactMetrics.map((stat) => (
+                      <StatDisplay key={stat.label} value={stat.value} label={stat.label} />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
 
               {/* Scroll indicator */}
               <div className="pt-8 animate-pulse-soft">
@@ -207,47 +234,51 @@ export default function Landing() {
         <Section dark>
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left — Vision */}
-            <div className="space-y-6">
-              <Pill color="blue">Why we exist</Pill>
-              <h2 className="headline-section">
-                Think back to your school days
-              </h2>
-              <p className="body-large opacity-80">
-                Was there ever a moment when you felt truly{' '}
-                <span className="text-brand-teal font-semibold">valued</span>,{' '}
-                <span className="text-brand-purple font-semibold">heard</span>, or{' '}
-                <span className="text-brand-blue font-semibold">connected</span>?
-              </p>
-              <p className="body-base opacity-60">
-                Maybe it was a teacher who noticed your effort, a friend who supported you, 
-                or just knowing you had a place where you belonged.
-              </p>
-              <div className="pl-5 border-l-2" style={{ borderColor: '#0d7377' }}>
-                <p className="body-base italic opacity-75">
-                  "Now imagine the opposite—feeling invisible, unheard, or unsafe. 
-                  That's the difference between a student who thrives and one who disengages."
+            <ScrollReveal animation="reveal-left">
+              <div className="space-y-6">
+                <Pill color="blue">Why we exist</Pill>
+                <h2 className="headline-section">
+                  Think back to your school days
+                </h2>
+                <p className="body-large opacity-80">
+                  Was there ever a moment when you felt truly{' '}
+                  <span className="text-brand-teal font-semibold">valued</span>,{' '}
+                  <span className="text-brand-purple font-semibold">heard</span>, or{' '}
+                  <span className="text-brand-blue font-semibold">connected</span>?
                 </p>
+                <p className="body-base opacity-60">
+                  Maybe it was a teacher who noticed your effort, a friend who supported you, 
+                  or just knowing you had a place where you belonged.
+                </p>
+                <div className="pl-5 border-l-2 animate-border-glow" style={{ borderColor: '#0d7377' }}>
+                  <p className="body-base italic opacity-75">
+                    "Now imagine the opposite—feeling invisible, unheard, or unsafe. 
+                    That's the difference between a student who thrives and one who disengages."
+                  </p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Right — Problems as Bento cards */}
-            <div className="grid gap-4">
-              {problems.map((problem, idx) => (
-                <div
-                  key={idx}
-                  className="glass-card p-5 hover-lift animate-fade-in"
-                  style={{ animationDelay: `${idx * 0.1}s` }}
-                >
-                  <div className="flex gap-4 items-start">
-                    <span className="text-2xl flex-shrink-0 mt-1">{problem.icon}</span>
-                    <div>
-                      <h4 className="font-semibold mb-1">{problem.title}</h4>
-                      <p className="body-small opacity-70">{problem.description}</p>
+            <ScrollReveal animation="reveal-right">
+              <div className="grid gap-4">
+                {problems.map((problem, idx) => (
+                  <div
+                    key={idx}
+                    className="glass-card-holo p-5 hover-lift shimmer-overlay"
+                    style={{ animationDelay: `${idx * 0.1}s` }}
+                  >
+                    <div className="flex gap-4 items-start">
+                      <span className="text-2xl flex-shrink-0 mt-1">{problem.icon}</span>
+                      <div>
+                        <h4 className="font-semibold mb-1">{problem.title}</h4>
+                        <p className="body-small opacity-70">{problem.description}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </ScrollReveal>
           </div>
         </Section>
 
@@ -262,11 +293,13 @@ export default function Landing() {
           <BentoGrid>
             {pillars.map((pillar, idx) => (
               <BentoItem key={idx} colSpan={idx === 0 ? 2 : 1} rowSpan={idx === 0 ? 1 : 1}>
-                <div className="space-y-4">
-                  <span className="text-4xl">{pillar.icon}</span>
-                  <h3 className="headline-card">{pillar.title}</h3>
-                  <p className="body-base opacity-75">{pillar.description}</p>
-                </div>
+                <ScrollReveal animation="reveal-up" delay={idx * 0.1}>
+                  <div className="space-y-4">
+                    <span className="text-4xl">{pillar.icon}</span>
+                    <h3 className="headline-card">{pillar.title}</h3>
+                    <p className="body-base opacity-75">{pillar.description}</p>
+                  </div>
+                </ScrollReveal>
               </BentoItem>
             ))}
           </BentoGrid>
@@ -282,21 +315,20 @@ export default function Landing() {
           />
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {solutions.map((solution, idx) => (
-              <div
-                key={idx}
-                className="glass-card p-6 flex items-start gap-4 hover-lift"
-              >
-                <span
-                  className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold border"
-                  style={{
-                    background: `linear-gradient(135deg, rgba(13,115,119,0.15), rgba(26,53,88,0.15))`,
-                    borderColor: 'rgba(255,255,255,0.1)',
-                  }}
-                >
-                  {solution.number}
-                </span>
-                <p className="font-medium leading-relaxed">{solution.title}</p>
-              </div>
+              <ScrollReveal key={idx} animation="reveal-up" delay={idx * 0.05}>
+                <div className="glass-card-holo p-6 flex items-start gap-4 hover-lift shimmer-overlay">
+                  <span
+                    className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold border"
+                    style={{
+                      background: `linear-gradient(135deg, rgba(13,115,119,0.15), rgba(26,53,88,0.15))`,
+                      borderColor: 'rgba(255,255,255,0.1)',
+                    }}
+                  >
+                    {solution.number}
+                  </span>
+                  <p className="font-medium leading-relaxed">{solution.title}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </Section>
@@ -310,20 +342,24 @@ export default function Landing() {
             subtitle="What happens when schools measure what actually matters"
           />
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="glass-card p-6 space-y-5">
-              <Pill color="teal">Traditional School</Pill>
-              <ProgressBar value={38} label="Student Voice & Agency" />
-              <ProgressBar value={45} label="Student Belonging" />
-              <ProgressBar value={52} label="Classroom Safety" />
-              <ProgressBar value={58} label="Student-Reported Wellbeing" />
-            </div>
-            <div className="glass-card p-6 space-y-5 border-l-4" style={{ borderLeftColor: '#0d7377' }}>
-              <Pill color="teal">Transformed School</Pill>
-              <ProgressBar value={82} label="Student Voice & Agency" />
-              <ProgressBar value={88} label="Student Belonging" />
-              <ProgressBar value={91} label="Classroom Safety" />
-              <ProgressBar value={89} label="Student-Reported Wellbeing" />
-            </div>
+            <ScrollReveal animation="reveal-left">
+              <div className="glass-card-holo p-6 space-y-5 shimmer-overlay">
+                <Pill color="teal">Traditional School</Pill>
+                <ProgressBar value={38} label="Student Voice & Agency" />
+                <ProgressBar value={45} label="Student Belonging" />
+                <ProgressBar value={52} label="Classroom Safety" />
+                <ProgressBar value={58} label="Student-Reported Wellbeing" />
+              </div>
+            </ScrollReveal>
+            <ScrollReveal animation="reveal-right">
+              <div className="glass-card-holo p-6 space-y-5 border-l-4 shimmer-overlay" style={{ borderLeftColor: '#0d7377' }}>
+                <Pill color="teal">Transformed School</Pill>
+                <ProgressBar value={82} label="Student Voice & Agency" />
+                <ProgressBar value={88} label="Student Belonging" />
+                <ProgressBar value={91} label="Classroom Safety" />
+                <ProgressBar value={89} label="Student-Reported Wellbeing" />
+              </div>
+            </ScrollReveal>
           </div>
           <div className="text-center">
             <p className="body-small opacity-50">
@@ -336,26 +372,28 @@ export default function Landing() {
             CTA SECTION
         ============================================================ */}
         <Section className="!py-20 lg:!py-28">
-          <div className="glass-card p-10 sm:p-14 lg:p-16 text-center space-y-8 max-w-4xl mx-auto">
-            <h2 className="headline-section">
-              Ready to transform your school?
-            </h2>
-            <p className="subhead-section max-w-2xl mx-auto">
-              Join a growing community of educators, school leaders, and changemakers 
-              building a future where every child feels they belong.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center pt-2">
-              <Button variant="primary" size="lg" href="/community">
-                Join the Community
-              </Button>
-              <Button variant="secondary" size="lg" href="mailto:projectapnapan@gmail.com">
-                Contact Us
-              </Button>
+          <ScrollReveal animation="reveal-scale">
+            <div className="glass-card-holo p-10 sm:p-14 lg:p-16 text-center space-y-8 max-w-4xl mx-auto shimmer-overlay">
+              <h2 className="headline-section">
+                Ready to transform your school?
+              </h2>
+              <p className="subhead-section max-w-2xl mx-auto">
+                Join a growing community of educators, school leaders, and changemakers 
+                building a future where every child feels they belong.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center pt-2">
+                <Button variant="primary" size="lg" href="/community">
+                  Join the Community
+                </Button>
+                <Button variant="secondary" size="lg" href="mailto:projectapnapan@gmail.com">
+                  Contact Us
+                </Button>
+              </div>
+              <p className="body-small opacity-50">
+                projectapnapan@gmail.com
+              </p>
             </div>
-            <p className="body-small opacity-50">
-              projectapnapan@gmail.com
-            </p>
-          </div>
+          </ScrollReveal>
         </Section>
 
         {/* ============================================================
